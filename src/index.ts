@@ -1,7 +1,4 @@
-interface Command {
-    callers: string[];
-    action: Function;
-}
+import { Command } from "./interfaces";
 
 function main(args: string[]) {
     const commands: Command[] = [
@@ -12,14 +9,13 @@ function main(args: string[]) {
     ];
 
     const helpCommand = commands[0];
+    const userInput = args[0];
 
     // automatically run help command if no args are provided
-    if (args.length === 0) {
+    if (!userInput) {
         helpCommand.action();
         return;
     }
-
-    const userInput = args[0];
 
     // handle command
     for (let command of commands) {

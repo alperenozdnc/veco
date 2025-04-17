@@ -1,0 +1,5 @@
+export interface Command {
+    callers: string[];
+    action: Function;
+}
+
