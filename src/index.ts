@@ -1,5 +1,5 @@
 import { Command } from "./interfaces";
-import { Help } from "./commands";
+import { Help, Create } from "./commands";
 
 function main(args: string[]) {
     const commands: Command[] = [
@@ -7,6 +7,11 @@ function main(args: string[]) {
             callers: ["help", "-h", "--help"],
             action: () => Help(commands),
             description: "Lists all the commands and their purposes."
+        },
+        {
+            callers: ["create", "-C", "--create"],
+            action: () => Create(),
+            description: "Handles for all create operations. Example: create project, create ignore, ..."
         }
     ];
 
