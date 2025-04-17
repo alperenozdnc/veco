@@ -20,7 +20,7 @@ function main(args: string[]) {
     }
 
     // handle command
-    for (let command of commands) {
+    for (const command of commands) {
         if (command.callers.includes(userInput)) {
             command.action();
             return;
