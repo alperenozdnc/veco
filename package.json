@@ -6,6 +6,8 @@
   },
   "devDependencies": {
     "@types/node": "^22.14.1",
+    "@types/readline-sync": "^1.4.8",
+    "readline-sync": "^1.4.10",
     "typescript": "^5.8.3"
   }
 }
