@@ -1,10 +1,11 @@
 import { Command } from "./interfaces";
+import { Help } from "./commands";
 
 function main(args: string[]) {
     const commands: Command[] = [
         {
             callers: ["help", "-h", "--help"],
-            action: () => console.log("help command")
+            action: () => Help(commands)
         }
     ];
 
