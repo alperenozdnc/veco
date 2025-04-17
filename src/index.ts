@@ -10,8 +10,8 @@ function main(args: string[]) {
         }
     ];
 
-    const helpCommand = commands[0];
-    const userInput = args[0];
+    const helpCommand: Command = commands[0];
+    const userInput: string = args[0];
 
     // automatically run help command if no args are provided
     if (!userInput) {
