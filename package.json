@@ -5,6 +5,7 @@
     "exec": "node ./build/index.js"
   },
   "devDependencies": {
+    "@types/node": "^22.14.1",
     "typescript": "^5.8.3"
   }
 }
