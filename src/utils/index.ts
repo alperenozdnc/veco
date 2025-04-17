@@ -1,0 +1,1 @@
+export { LogError } from "./LogError";
