@@ -11,7 +11,7 @@ function main(args: string[]) {
         {
             callers: ["create", "-C", "--create"],
             action: () => Create(args.slice(1)),
-            description: "Handles for all create operations. Example: create project, create ignore, ..."
+            description: "Handles all create operations. Example: create project, create ignore, ..."
         }
     ];
 
