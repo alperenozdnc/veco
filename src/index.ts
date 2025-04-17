@@ -1,5 +1,6 @@
 import { Command } from "./interfaces";
 import { Help, Create } from "./commands";
+import { LogError } from "./utils";
 
 function main(args: string[]) {
     const commands: Command[] = [
@@ -33,7 +34,7 @@ function main(args: string[]) {
     }
 
     // handle command not found
-    console.log(`The command '${userInput}' does not exist.`);
+    LogError(`command '${userInput}' does not exist.`);
     console.log(`Type ${helpCommand.callers.map((caller: string) => `"${caller}"`).join(", ")} for help.`)
 }
 
