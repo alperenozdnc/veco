@@ -1,4 +1,4 @@
-import { LogError } from "../../utils";
+import { CheckVecoDirectory, LogError } from "../../utils";
 import { CreateIgnore } from "./CreateIgnore";
 
 interface CreateAction {
@@ -16,12 +16,19 @@ export function Create(args: string[]) {
     ]
 
     const actionInput: string = args[0];
+    const isProject = CheckVecoDirectory();
 
-    for (const action of actions) {
-        if (action.name === actionInput) return action.run();
+    if (isProject || actionInput === "project") {
+        for (const action of actions) {
+            if (action.name === actionInput) return action.run();
+        }
+
+        // throw error if invalid create action
+        LogError(`invalid create action '${actionInput}'`);
+        console.log(`Usage: 'create {${actions.map((action) => action.name).join("|")}}'`)
+    } else {
+        LogError(`no veco project found in this or any parent directories`);
+        console.log("\nYou must run create commands inside a project.");
+        console.log("'veco create project' to create a project.");
     }
-
-    // throw error if invalid create action
-    LogError(`invalid create action '${actionInput}'`);
-    console.log(`Usage: 'create {${actions.map((action) => action.name).join("|")}}'`)
 }
