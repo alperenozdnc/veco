@@ -5,7 +5,8 @@ function main(args: string[]) {
     const commands: Command[] = [
         {
             callers: ["help", "-h", "--help"],
-            action: () => Help(commands)
+            action: () => Help(commands),
+            description: "Lists all the commands and their purposes."
         }
     ];
 
