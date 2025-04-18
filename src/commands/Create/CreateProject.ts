@@ -48,6 +48,8 @@ export function CreateProject(args: string[]) {
 
     fs.rmSync(`${REF_DIR}/.veco`, { recursive: true, force: true })
 
+    fs.writeFileSync(`${VECO_PATH}/focus`, "");
+
     console.log("Successfully created project.");
     console.log("'veco help' to see what commands you can use.");
 }
