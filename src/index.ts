@@ -1,5 +1,5 @@
 import { Command } from "./interfaces";
-import { Help, Create, Delete } from "./commands";
+import { Help, Create, Delete, View } from "./commands";
 import { LogError } from "./utils";
 
 function main(args: string[]) {
@@ -18,6 +18,11 @@ function main(args: string[]) {
             callers: ["delete", "-D", "--delete"],
             action: () => Delete(args.slice(1)),
             description: "Handles all delete operations. Example: delete project, delete ignore, ..."
+        },
+        {
+            callers: ["view", "-V", "--view"],
+            action: () => View(args.slice(1)),
+            description: "Handles all view operations. Example: view changes, view change <id>, ..."
         },
     ];
 
