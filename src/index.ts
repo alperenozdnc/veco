@@ -1,5 +1,5 @@
 import { Command } from "./interfaces";
-import { Help, Create } from "./commands";
+import { Help, Create, Delete } from "./commands";
 import { LogError } from "./utils";
 
 function main(args: string[]) {
@@ -13,7 +13,12 @@ function main(args: string[]) {
             callers: ["create", "-C", "--create"],
             action: () => Create(args.slice(1)),
             description: "Handles all create operations. Example: create project, create ignore, ..."
-        }
+        },
+        {
+            callers: ["delete", "-D", "--delete"],
+            action: () => Delete(args.slice(1)),
+            description: "Handles all delete operations. Example: delete project, delete ignore, ..."
+        },
     ];
 
     const helpCommand: Command = commands[0];
