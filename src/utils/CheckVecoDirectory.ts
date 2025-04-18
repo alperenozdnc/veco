@@ -1,6 +1,6 @@
 import fs from "fs";
 
-export function CheckVecoDirectory() {
+export function CheckVecoDirectory(dirToCheck = process.cwd()) {
     let isInVecoDirectory = false;
 
     function checkDirRecursively(dir: string) {
@@ -17,7 +17,7 @@ export function CheckVecoDirectory() {
         checkDirRecursively(dirSplit.join("/"));
     }
 
-    checkDirRecursively(__dirname);
+    checkDirRecursively(dirToCheck);
 
     return isInVecoDirectory;
 }
