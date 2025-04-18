@@ -1,5 +1,5 @@
 import { Command } from "./interfaces";
-import { Help, Create, Delete, View } from "./commands";
+import { Help, Create, Delete, View, Focus } from "./commands";
 import { LogError } from "./utils";
 
 function main(args: string[]) {
@@ -23,6 +23,11 @@ function main(args: string[]) {
             callers: ["view", "-V", "--view"],
             action: () => View(args.slice(1)),
             description: "Handles all view operations. Example: view changes, view change <id>, ..."
+        },
+        {
+            callers: ["focus", "-F", "--focus"],
+            action: () => Focus(args.slice(1)),
+            description: "Puts focus on files to be added to a change. Example: focus file.txt, focus ./"
         },
     ];
 
