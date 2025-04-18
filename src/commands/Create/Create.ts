@@ -1,4 +1,5 @@
 import { CheckVecoDirectory, LogError } from "../../utils";
+import { CreateChange } from "./CreateChange";
 import { CreateIgnore } from "./CreateIgnore";
 import { CreateProject } from "./CreateProject";
 
@@ -12,7 +13,7 @@ export function Create(args: string[]) {
 
     const actions: CreateAction[] = [
         { name: "project", run: () => CreateProject(restOfArgs) },
-        { name: "change", run: () => { } },
+        { name: "change", run: () => CreateChange() },
         { name: "ignore", run: () => CreateIgnore(restOfArgs) },
     ]
 
