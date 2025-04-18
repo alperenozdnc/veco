@@ -1,5 +1,6 @@
 import { CheckVecoDirectory, LogError } from "../../utils";
 import { DeleteIgnore } from "./DeleteIgnore";
+import { DeleteProject } from "./DeleteProject";
 
 interface DeleteAction {
     name: string;
@@ -10,7 +11,7 @@ export function Delete(args: string[]) {
     const restOfArgs = args.slice(1);
 
     const actions: DeleteAction[] = [
-        { name: "project", run: () => { } },
+        { name: "project", run: () => DeleteProject() },
         { name: "change", run: () => { } },
         { name: "ignore", run: () => { DeleteIgnore(restOfArgs) } },
     ]
