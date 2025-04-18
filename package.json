@@ -7,6 +7,7 @@
   "devDependencies": {
     "@types/node": "^22.14.1",
     "@types/readline-sync": "^1.4.8",
+    "@types/sha1": "^1.1.5",
     "readline-sync": "^1.4.10",
     "sha1": "^1.1.1",
     "typescript": "^5.8.3"
