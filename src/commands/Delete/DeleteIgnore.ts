@@ -5,8 +5,8 @@ import { GetVecoDirectory, LogError } from "../../utils";
 export function DeleteIgnore(args: string[]) {
     if (args.length === 0) return LogError("no files to unignore");
 
-    const vecoDirectory = GetVecoDirectory();
-    const ignoreFilePath = `${vecoDirectory}/.vecoig`;
+    const VECO_DIRECTORY = GetVecoDirectory();
+    const ignoreFilePath = `${VECO_DIRECTORY}/.vecoig`;
 
     if (!fs.existsSync(ignoreFilePath)) return LogError("no ignore file found");
 
