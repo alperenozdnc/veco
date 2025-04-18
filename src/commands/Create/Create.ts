@@ -1,5 +1,6 @@
 import { CheckVecoDirectory, LogError } from "../../utils";
 import { CreateIgnore } from "./CreateIgnore";
+import { CreateProject } from "./CreateProject";
 
 interface CreateAction {
     name: string;
@@ -10,7 +11,7 @@ export function Create(args: string[]) {
     const restOfArgs = args.slice(1);
 
     const actions: CreateAction[] = [
-        { name: "project", run: () => { } },
+        { name: "project", run: () => CreateProject(restOfArgs) },
         { name: "change", run: () => { } },
         { name: "ignore", run: () => CreateIgnore(restOfArgs) },
     ]
