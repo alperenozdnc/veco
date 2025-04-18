@@ -1,14 +1,13 @@
 import fs from "fs";
-import readline from "readline-sync";
-import { CheckVecoDirectory, LogError } from "../../utils";
+import { CheckVecoDirectory, HandleYesNoInput, LogError } from "../../utils";
 
 export function CreateProject(args: string[]) {
     let path = args[0];
 
     if (!path) {
-        const input = readline.question("No path given, assuming current directory [y/n]? ");
+        const PATH_IS_CURR_DIR = HandleYesNoInput("No path given, assuming current directory?");
 
-        if (input === "yes" || input === "y") {
+        if (PATH_IS_CURR_DIR) {
             path = process.cwd();
         } else {
             console.log("Aborting...");
