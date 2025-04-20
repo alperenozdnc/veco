@@ -1,11 +1,3 @@
-// each change has a unique id
-// changes only track focused files/directories
-// there are 3 properties, date, msg, and modifications
-// tracks DEL, INIT for file deletion, and initialization
-// no need for modification because files will be recorded from the scratch
-// each change references the previous change state
-// order of changes are recorded in ./veco/changes/order
-
 import fs from "fs";
 import sha from "sha1";
 
