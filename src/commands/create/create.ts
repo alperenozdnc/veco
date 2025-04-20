@@ -1,24 +1,24 @@
-import { CheckVecoDirectory, log } from "../../utils";
-import { CreateChange } from "./CreateChange";
-import { CreateIgnore } from "./CreateIgnore";
-import { CreateProject } from "./CreateProject";
+import { checkVecoDir, log } from "../../utils";
+import { createChange } from "./createChange";
+import { createIgnore } from "./createIgnore";
+import { createProject } from "./createProject";
 
 interface CreateAction {
     name: string;
     run: Function;
 }
 
-export function Create(args: string[]) {
+export function create(args: string[]) {
     const restOfArgs = args.slice(1);
 
     const actions: CreateAction[] = [
-        { name: "project", run: () => CreateProject(restOfArgs) },
-        { name: "change", run: () => CreateChange(restOfArgs) },
-        { name: "ignore", run: () => CreateIgnore(restOfArgs) },
+        { name: "project", run: () => createProject(restOfArgs) },
+        { name: "change", run: () => createChange(restOfArgs) },
+        { name: "ignore", run: () => createIgnore(restOfArgs) },
     ]
 
     const actionInput: string = args[0];
-    const isProject = CheckVecoDirectory();
+    const isProject = checkVecoDir();
 
     if (isProject || actionInput === "project") {
         for (const action of actions) {

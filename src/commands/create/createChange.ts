@@ -16,11 +16,11 @@ interface Difference {
     newFile?: File
 }
 
-function LogUsage() {
+function logUsage() {
     console.log("Usage: 'veco create change <-M/msg/--message> {message} <-D/desc/--description> {description}'");
 }
 
-function CreateFileTree(root: string, isRef: boolean = false, isFilenameTree = false): (string | File)[] {
+function createFileTree(root: string, isRef: boolean = false, isFilenameTree = false): (string | File)[] {
     const directoryContents = fs.readdirSync(root);
     const tree = [];
 
@@ -36,7 +36,7 @@ function CreateFileTree(root: string, isRef: boolean = false, isFilenameTree = f
                 if (ignores.includes(path)) continue;
             }
 
-            tree.push(...CreateFileTree(path, isRef, isFilenameTree));
+            tree.push(...createFileTree(path, isRef, isFilenameTree));
 
             continue;
         }
@@ -56,7 +56,7 @@ function CreateFileTree(root: string, isRef: boolean = false, isFilenameTree = f
     return tree;
 }
 
-function CompareTwoTrees(treeA: File[], treeB: File[]): Difference[] | null {
+function compareTwoTrees(treeA: File[], treeB: File[]): Difference[] | null {
     if (JSON.stringify(treeA) === JSON.stringify(treeB)) {
         return null;
     }
@@ -95,11 +95,11 @@ function CompareTwoTrees(treeA: File[], treeB: File[]): Difference[] | null {
     return differences.length > 0 ? differences : null;
 }
 
-function CompileLastChange(order: string[]): File[] {
+function compileLastChange(order: string[]): File[] {
     return [];
 }
 
-export function CreateChange(args: string[]) {
+export function createChange(args: string[]) {
     const DATE_UNIX_TIME: number = Date.now();
     const ID = sha(DATE_UNIX_TIME.toString()).substring(0, 10);
 
@@ -110,7 +110,7 @@ export function CreateChange(args: string[]) {
 
     if (args.length < 2) {
         log.error("insufficient arguments");
-        LogUsage();
+        logUsage();
         return;
     }
 
@@ -118,7 +118,7 @@ export function CreateChange(args: string[]) {
 
     if (!hasMsgOption) {
         log.error("message option is mandatory.")
-        LogUsage();
+        logUsage();
         return;
     }
 
@@ -156,7 +156,7 @@ export function CreateChange(args: string[]) {
     if (!msg) return log.error("messages are mandatory");
     if (isDescProvided && !desc) return log.error("found description option but no value");
 
-    let REF_TREE = CreateFileTree(`${VECO_DIR}/.veco/ref`, true) as File[];
+    let REF_TREE = createFileTree(`${VECO_DIR}/.veco/ref`, true) as File[];
 
     if (fs.existsSync(`${VECO_DIR}/.veco/order`)) {
         const order: string[] = fs.readFileSync(`${VECO_DIR}/.veco/order`).toString().split("\n");
@@ -165,9 +165,9 @@ export function CreateChange(args: string[]) {
         // REF_TREE = CompileLastChange(order);
     }
 
-    const CURR_TREE = CreateFileTree(`${VECO_DIR}`) as File[];
+    const CURR_TREE = createFileTree(`${VECO_DIR}`) as File[];
 
-    const allDifferences = CompareTwoTrees(REF_TREE, CURR_TREE);
+    const allDifferences = compareTwoTrees(REF_TREE, CURR_TREE);
 
     let focusesFileContent = fs.readFileSync(FOCUSFILE_PATH).toString().split("\n");
     let focuses = [];
@@ -176,7 +176,7 @@ export function CreateChange(args: string[]) {
         if (!focusPath) continue;
 
         if (fs.statSync(focusPath).isDirectory()) {
-            focuses.push(...CreateFileTree(focusPath, false, true));
+            focuses.push(...createFileTree(focusPath, false, true));
         }
 
         focuses.push(focusPath);

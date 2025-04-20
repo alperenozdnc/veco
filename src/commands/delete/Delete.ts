@@ -1,6 +1,6 @@
-import { CheckVecoDirectory, log } from "../../utils";
-import { DeleteIgnore } from "./DeleteIgnore";
-import { DeleteProject } from "./DeleteProject";
+import { checkVecoDir, log } from "../../utils";
+import { deleteIgnore } from "./deleteIgnore";
+import { deleteProject } from "./deleteProject";
 
 interface DeleteAction {
     name: string;
@@ -11,13 +11,13 @@ export function Delete(args: string[]) {
     const restOfArgs = args.slice(1);
 
     const actions: DeleteAction[] = [
-        { name: "project", run: () => DeleteProject() },
+        { name: "project", run: () => deleteProject() },
         { name: "change", run: () => { } },
-        { name: "ignore", run: () => { DeleteIgnore(restOfArgs) } },
+        { name: "ignore", run: () => { deleteIgnore(restOfArgs) } },
     ]
 
     const actionInput: string = args[0];
-    const isProject = CheckVecoDirectory();
+    const isProject = checkVecoDir();
 
     if (isProject) {
         for (const action of actions) {

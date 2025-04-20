@@ -1,11 +1,11 @@
 import fs from "fs";
 
-import { GetVecoDirectory, log } from "../../utils";
+import { getVecoDir, log } from "../../utils";
 
-export function DeleteIgnore(args: string[]) {
+export function deleteIgnore(args: string[]) {
     if (args.length === 0) return log.error("no files to unignore");
 
-    const VECO_DIR = GetVecoDirectory();
+    const VECO_DIR = getVecoDir();
     const IGNOREFILE_PATH = `${VECO_DIR}/.vecoig`;
 
     if (!fs.existsSync(IGNOREFILE_PATH)) return log.error("no ignore file found");

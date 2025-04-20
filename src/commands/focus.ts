@@ -1,6 +1,6 @@
 import fs from "fs";
 
-import { CheckVecoDirectory, log } from "../utils";
+import { checkVecoDir, log } from "../utils";
 import { FOCUSFILE_PATH, IGNOREFILE_PATH } from "../constants";
 
 function reformatPath(path: string) {
@@ -15,8 +15,8 @@ function reformatPath(path: string) {
     return newPath;
 }
 
-export function Focus(args: string[]) {
-    const isVecoDirectory: boolean = CheckVecoDirectory();
+export function focus(args: string[]) {
+    const isVecoDirectory: boolean = checkVecoDir();
 
     if (!isVecoDirectory) {
         log.error("no veco project found in this or any parent directories");

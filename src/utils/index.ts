@@ -1,4 +1,4 @@
 export { log } from "./log";
-export { CheckVecoDirectory } from "./CheckVecoDirectory";
-export { GetVecoDirectory } from "./GetVecoDirectory";
-export { HandleYesNoInput } from "./HandleYesNoInput";
+export { checkVecoDir } from "./checkVecoDir";
+export { getVecoDir } from "./getVecoDir";
+export { handleYesNoInput } from "./handleYesNoInput";

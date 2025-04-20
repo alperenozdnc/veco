@@ -1,13 +1,13 @@
 import fs from "fs";
 
-import { GetVecoDirectory, log, HandleYesNoInput } from "../../utils";
+import { getVecoDir, log, handleYesNoInput } from "../../utils";
 
-export function DeleteProject() {
-    const VECO_DIR = GetVecoDirectory();
+export function deleteProject() {
+    const VECO_DIR = getVecoDir();
     const IGNOREFILE_PATH = `${VECO_DIR}/.vecoig`;
 
     log.warning(`This action will delete the veco instance on ${VECO_DIR}`);
-    const USER_DID_CONFIRM = HandleYesNoInput("Are you absolutely sure?");
+    const USER_DID_CONFIRM = handleYesNoInput("Are you absolutely sure?");
 
     if (!USER_DID_CONFIRM) return console.log("Aborting...");
 

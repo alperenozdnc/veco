@@ -1,17 +1,17 @@
 import { Command } from "./interfaces";
-import { Help, Create, Delete, View, Focus } from "./commands";
+import { help, create, Delete, view, focus } from "./commands";
 import { log } from "./utils";
 
 function main(args: string[]) {
     const commands: Command[] = [
         {
             callers: ["help", "-h", "--help"],
-            action: () => Help(commands),
+            action: () => help(commands),
             description: "Lists all the commands and their purposes."
         },
         {
             callers: ["create", "-C", "--create"],
-            action: () => Create(args.slice(1)),
+            action: () => create(args.slice(1)),
             description: "Handles all create operations. Example: create project, create ignore, ..."
         },
         {
@@ -21,12 +21,12 @@ function main(args: string[]) {
         },
         {
             callers: ["view", "-V", "--view"],
-            action: () => View(args.slice(1)),
+            action: () => view(args.slice(1)),
             description: "Handles all view operations. Example: view changes, view change <id>, ..."
         },
         {
             callers: ["focus", "-F", "--focus"],
-            action: () => Focus(args.slice(1)),
+            action: () => focus(args.slice(1)),
             description: "Puts focus on files to be added to a change. Example: focus file.txt, focus ./"
         },
     ];

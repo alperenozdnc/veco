@@ -2,7 +2,7 @@ import fs from "fs";
 
 import { log } from "../../utils";
 
-export function CreateIgnore(filesToIgnore: string[]) {
+export function createIgnore(filesToIgnore: string[]) {
     // ensures ignore file exists
     if (!fs.existsSync(".vecoig")) {
         console.log("Creating ignore file...");

@@ -1,11 +1,11 @@
 import fs from "fs";
-import { CheckVecoDirectory, HandleYesNoInput, log } from "../../utils";
+import { checkVecoDir, handleYesNoInput, log } from "../../utils";
 
-export function CreateProject(args: string[]) {
+export function createProject(args: string[]) {
     let path = args[0];
 
     if (!path) {
-        const PATH_IS_CURR_DIR = HandleYesNoInput("No path given, assuming current directory?");
+        const PATH_IS_CURR_DIR = handleYesNoInput("No path given, assuming current directory?");
 
         if (PATH_IS_CURR_DIR) {
             path = process.cwd();
@@ -27,7 +27,7 @@ export function CreateProject(args: string[]) {
 
     if (path !== process.cwd()) pathToCheck = `${process.cwd()}/${path}`
 
-    if (CheckVecoDirectory(pathToCheck)) {
+    if (checkVecoDir(pathToCheck)) {
         return log.error(`there is already a project in target or inside a parent`);
     }
 

@@ -1,6 +1,6 @@
 import { Command } from "../interfaces";
 
-export function Help(commands: Command[]) {
+export function help(commands: Command[]) {
     const REPO_URL = "https://github.com/alperenozdnc/version-control";
     const LICENSE_URL = "https://www.gnu.org/licenses/gpl-3.0.en.html";
 

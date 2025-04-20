@@ -1,5 +1,5 @@
-export { Help } from "./Help";
-export { Create } from "./Create/Create";
-export { Delete } from "./Delete/Delete";
-export { View } from "./View";
-export { Focus } from "./Focus";
+export { help } from "./help";
+export { create } from "./create";
+export { Delete } from "./delete";
+export { view } from "./view";
+export { focus } from "./focus";

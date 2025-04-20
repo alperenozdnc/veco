@@ -1,7 +1,7 @@
 import fs from "fs";
 
 // this function assumes there is a veco directory to run
-export function GetVecoDirectory(dirToSearch = process.cwd()) {
+export function getVecoDir(dirToSearch = process.cwd()) {
     let vecoDirectory: string = "";
 
     function checkDirRecursively(dir: string) {
