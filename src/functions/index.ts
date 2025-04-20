@@ -1,0 +1,1 @@
+export { handleModCmd } from "./handleModCmd";

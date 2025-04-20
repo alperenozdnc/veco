@@ -1,35 +1,19 @@
-import { checkVecoDir, log } from "../../utils";
+import { handleModCmd } from "../../functions";
+import { Action } from "../../interfaces";
+
 import { deleteIgnore } from "./deleteIgnore";
 import { deleteProject } from "./deleteProject";
 
-interface DeleteAction {
-    name: string;
-    run: Function;
-}
-
+// NOT `delete` because it's a keyword
 export function Delete(args: string[]) {
+    const cmd = args[0];
     const restOfArgs = args.slice(1);
 
-    const actions: DeleteAction[] = [
+    const actions: Action[] = [
         { name: "project", run: () => deleteProject() },
         { name: "change", run: () => { } },
-        { name: "ignore", run: () => { deleteIgnore(restOfArgs) } },
+        { name: "ignore", run: () => deleteIgnore(restOfArgs) },
     ]
 
-    const actionInput: string = args[0];
-    const isProject = checkVecoDir();
-
-    if (isProject) {
-        for (const action of actions) {
-            if (action.name === actionInput) return action.run();
-        }
-
-        // throw error if invalid create action
-        log.error(`invalid delete action '${actionInput}'`);
-        console.log(`Usage: 'delete {${actions.map((action) => action.name).join("|")}}'`)
-    } else {
-        log.error(`no veco project found in this or any parent directories`);
-        console.log("\nYou must run delete commands inside a project.");
-        console.log("'veco create project' to create a project.");
-    }
+    handleModCmd(actions, cmd, "delete");
 }
