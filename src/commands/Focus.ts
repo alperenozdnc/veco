@@ -1,6 +1,6 @@
 import fs from "fs";
 
-import { CheckVecoDirectory, LogError, LogWarning } from "../utils";
+import { CheckVecoDirectory, log } from "../utils";
 import { FOCUSFILE_PATH, IGNOREFILE_PATH } from "../constants";
 
 function reformatPath(path: string) {
@@ -19,7 +19,7 @@ export function Focus(args: string[]) {
     const isVecoDirectory: boolean = CheckVecoDirectory();
 
     if (!isVecoDirectory) {
-        LogError("no veco project found in this or any parent directories");
+        log.error("no veco project found in this or any parent directories");
         console.log("\nYou must run the focus command inside a project.");
         console.log("'veco create project' to create a project.");
 
@@ -32,7 +32,7 @@ export function Focus(args: string[]) {
     let ignorefileContent: string[] = [];
 
     if (args.length === 0) {
-        LogError("no command or file(s) provided");
+        log.error("no command or file(s) provided");
         return console.log("Aborting...")
     }
 
@@ -49,7 +49,7 @@ export function Focus(args: string[]) {
     } else if (args[0] === "list") {
         console.log("All focused paths: ")
 
-        if (!focusfileContentString) return LogError("nothing to list");
+        if (!focusfileContentString) return log.error("nothing to list");
 
         console.log(focusfileContentString);
 
@@ -59,7 +59,7 @@ export function Focus(args: string[]) {
             pathToRemove = reformatPath(pathToRemove);
 
             if (!focusfileContent.includes(pathToRemove)) {
-                LogWarning(`${pathToRemove} is not focused, skipping...`)
+                log.warning(`${pathToRemove} is not focused, skipping...`)
                 return;
             }
 
@@ -74,11 +74,11 @@ export function Focus(args: string[]) {
     }
 
     for (let path of args) {
-        if (!fs.existsSync(path)) return LogError(`${path} does not exist`);
+        if (!fs.existsSync(path)) return log.error(`${path} does not exist`);
 
         if (ignorefileContent) {
             if (ignorefileContent.includes(path)) {
-                LogWarning(`${path} is an ignored path, skipping...`)
+                log.warning(`${path} is an ignored path, skipping...`)
                 continue;
             }
         }
@@ -86,7 +86,7 @@ export function Focus(args: string[]) {
         path = reformatPath(path);
 
         if (focusfileContent.includes(path)) {
-            LogWarning(`${path} is already focused, skipping...`);
+            log.warning(`${path} is already focused, skipping...`);
             continue;
         }
 

@@ -1,4 +1,4 @@
-import { CheckVecoDirectory, LogError } from "../../utils";
+import { CheckVecoDirectory, log } from "../../utils";
 import { DeleteIgnore } from "./DeleteIgnore";
 import { DeleteProject } from "./DeleteProject";
 
@@ -25,10 +25,10 @@ export function Delete(args: string[]) {
         }
 
         // throw error if invalid create action
-        LogError(`invalid delete action '${actionInput}'`);
+        log.error(`invalid delete action '${actionInput}'`);
         console.log(`Usage: 'delete {${actions.map((action) => action.name).join("|")}}'`)
     } else {
-        LogError(`no veco project found in this or any parent directories`);
+        log.error(`no veco project found in this or any parent directories`);
         console.log("\nYou must run delete commands inside a project.");
         console.log("'veco create project' to create a project.");
     }

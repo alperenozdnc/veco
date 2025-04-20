@@ -1,5 +1,6 @@
 import fs from "fs";
-import { LogError } from "../../utils";
+
+import { log } from "../../utils";
 
 export function CreateIgnore(filesToIgnore: string[]) {
     // ensures ignore file exists
@@ -12,9 +13,9 @@ export function CreateIgnore(filesToIgnore: string[]) {
     const ignoreFileContent: string[] = fs.readFileSync(".vecoig").toString().split("\n");
 
     for (const file of filesToIgnore) {
-        if (!fs.existsSync(file)) return LogError(`File ${file} doesn't exist!`);
+        if (!fs.existsSync(file)) return log.error(`File ${file} doesn't exist!`);
 
-        if (ignoreFileContent.includes(file)) return LogError(`File ${file} is already ignored.`);
+        if (ignoreFileContent.includes(file)) return log.error(`File ${file} is already ignored.`);
 
         fs.appendFileSync(".vecoig", `${file}\n`);
         console.log(`File ${file} is now being ignored.`);
@@ -22,7 +23,7 @@ export function CreateIgnore(filesToIgnore: string[]) {
 
     // throws error if no file provided
     if (!filesToIgnore.length) {
-        LogError("no file name provided\n");
+        log.error("no file name provided\n");
         console.log(`use 'veco create ignore {file_name}' to add an ignore`);
     }
 

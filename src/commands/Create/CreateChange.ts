@@ -2,7 +2,7 @@ import fs from "fs";
 import sha from "sha1";
 
 import { VECO_DIR, FOCUSFILE_PATH, IGNOREFILE_PATH } from "../../constants";
-import { LogError } from "../../utils";
+import { log } from "../../utils";
 
 interface File {
     name: string;
@@ -109,7 +109,7 @@ export function CreateChange(args: string[]) {
     };
 
     if (args.length < 2) {
-        LogError("insufficient arguments");
+        log.error("insufficient arguments");
         LogUsage();
         return;
     }
@@ -117,7 +117,7 @@ export function CreateChange(args: string[]) {
     const hasMsgOption = args.some((arg: string) => CHANGE_OPTS.message.names.includes(arg));
 
     if (!hasMsgOption) {
-        LogError("message option is mandatory.")
+        log.error("message option is mandatory.")
         LogUsage();
         return;
     }
@@ -148,13 +148,13 @@ export function CreateChange(args: string[]) {
                 desc = arg;
                 currOption = undefined;
             } else {
-                return LogError(`invalid argument '${arg}'`);
+                return log.error(`invalid argument '${arg}'`);
             }
         }
     }
 
-    if (!msg) return LogError("messages are mandatory");
-    if (isDescProvided && !desc) return LogError("found description option but no value");
+    if (!msg) return log.error("messages are mandatory");
+    if (isDescProvided && !desc) return log.error("found description option but no value");
 
     let REF_TREE = CreateFileTree(`${VECO_DIR}/.veco/ref`, true) as File[];
 
@@ -194,12 +194,12 @@ export function CreateChange(args: string[]) {
     }
 
     if (!differences) {
-        LogError("nothing was changed");
+        log.error("nothing was changed");
         console.log("Aborting...");
         return;
     }
 
-    if (!fs.existsSync(FOCUSFILE_PATH)) return LogError("no file is focused, nothing to change")
+    if (!fs.existsSync(FOCUSFILE_PATH)) return log.error("no file is focused, nothing to change")
 
     fs.mkdirSync(`${VECO_DIR}/.veco/changes/${ID}`);
     fs.writeFileSync(`${VECO_DIR}/.veco/changes/${ID}/MOD`, "[]");

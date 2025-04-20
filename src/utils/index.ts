@@ -1,5 +1,4 @@
-export { LogError } from "./LogError";
+export { log } from "./log";
 export { CheckVecoDirectory } from "./CheckVecoDirectory";
 export { GetVecoDirectory } from "./GetVecoDirectory";
-export { LogWarning } from "./LogWarning";
 export { HandleYesNoInput } from "./HandleYesNoInput";

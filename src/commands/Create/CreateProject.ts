@@ -1,5 +1,5 @@
 import fs from "fs";
-import { CheckVecoDirectory, HandleYesNoInput, LogError } from "../../utils";
+import { CheckVecoDirectory, HandleYesNoInput, log } from "../../utils";
 
 export function CreateProject(args: string[]) {
     let path = args[0];
@@ -17,9 +17,9 @@ export function CreateProject(args: string[]) {
 
     if (path === ".") path = process.cwd();
 
-    if (!fs.existsSync(path)) return LogError(`invalid directory ${path}`);
+    if (!fs.existsSync(path)) return log.error(`invalid directory ${path}`);
 
-    if (!fs.statSync(path).isDirectory()) return LogError(`${path} is not a directory`)
+    if (!fs.statSync(path).isDirectory()) return log.error(`${path} is not a directory`)
 
     if (path.endsWith("/")) path = path.slice(0, -1);
 
@@ -28,7 +28,7 @@ export function CreateProject(args: string[]) {
     if (path !== process.cwd()) pathToCheck = `${process.cwd()}/${path}`
 
     if (CheckVecoDirectory(pathToCheck)) {
-        return LogError(`there is already a project in target or inside a parent`);
+        return log.error(`there is already a project in target or inside a parent`);
     }
 
     const VECO_PATH = `${path}/.veco`
