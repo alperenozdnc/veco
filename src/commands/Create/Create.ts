@@ -13,7 +13,7 @@ export function Create(args: string[]) {
 
     const actions: CreateAction[] = [
         { name: "project", run: () => CreateProject(restOfArgs) },
-        { name: "change", run: () => CreateChange() },
+        { name: "change", run: () => CreateChange(restOfArgs) },
         { name: "ignore", run: () => CreateIgnore(restOfArgs) },
     ]
 
