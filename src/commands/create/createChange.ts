@@ -42,7 +42,7 @@ export function createChange(args: string[], dev = false) {
     for (const diff of allDifferences!) {
         const path = diff.file.path;
 
-        if (focuses.includes(path) || diff.operation === "INIT") {
+        if (focuses.includes(path)) {
             differences.push(diff);
             continue;
         }
@@ -59,6 +59,7 @@ export function createChange(args: string[], dev = false) {
     if (dev) {
         log.warning("dev mode enabled, no creating or destroying files");
         console.log("CHANGE CREATED", { DATE_UNIX_TIME, ID, msg, desc, differences });
+        updateRefTree(REF_PATH, differences);
 
         return;
     }
