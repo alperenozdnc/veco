@@ -7,66 +7,13 @@ import { log } from "../../utils";
 
 import { createFileTree } from "./createFileTree";
 import { compareTwoTrees } from "./compareTwoTrees";
-import { logUsage } from "./logUsage";
+import { getMsgAndDesc } from "./getMsgAndDesc";
 
 export function createChange(args: string[]) {
     const DATE_UNIX_TIME: number = Date.now();
     const ID = sha(DATE_UNIX_TIME.toString()).substring(0, 10);
-
-    const CHANGE_OPTS = {
-        message: { names: ["-M", "msg", "--message"], label: "msg" },
-        description: { names: ["-D", "desc", "--description"], label: "desc" }
-    };
-
-    if (args.length < 2) {
-        log.error("insufficient arguments");
-        logUsage();
-        return;
-    }
-
-    const hasMsgOption = args.some((arg: string) => CHANGE_OPTS.message.names.includes(arg));
-
-    if (!hasMsgOption) {
-        log.error("message option is mandatory.")
-        logUsage();
-        return;
-    }
-
-    let currOption: "msg" | "desc" | undefined;
-
-    let isDescProvided = false;
-
-    let msg: string = "";
-    let desc: string | undefined;
-
-    for (const arg of args) {
-        const options = [...CHANGE_OPTS.message.names, ...CHANGE_OPTS.description.names];
-        const isArgOption = options.includes(arg);
-
-        if (isArgOption) {
-            if (CHANGE_OPTS.message.names.includes(arg)) {
-                currOption = "msg";
-            } else {
-                currOption = "desc";
-                isDescProvided = true;
-            }
-        } else {
-            if (currOption === "msg") {
-                msg = arg;
-                currOption = undefined;
-            } else if (currOption === "desc") {
-                desc = arg;
-                currOption = undefined;
-            } else {
-                return log.error(`invalid argument '${arg}'`);
-            }
-        }
-    }
-
-    if (!msg) return log.error("messages are mandatory");
-    if (isDescProvided && !desc) return log.error("found description option but no value");
-
     let REF_TREE = createFileTree(`${VECO_DIR}/.veco/ref`, true) as File[];
+    const { msg, desc, isDescProvided } = getMsgAndDesc(args);
 
     if (fs.existsSync(`${VECO_DIR}/.veco/order`)) {
         const order: string[] = fs.readFileSync(`${VECO_DIR}/.veco/order`).toString().split("\n");
