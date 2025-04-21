@@ -27,9 +27,8 @@ export function createChange(args: string[], dev = false) {
         const path = focusesFileContent[i];
 
         if (!path) continue;
-        if (!fs.existsSync(path)) continue;
 
-        if (fs.statSync(path).isDirectory()) {
+        if (fs.existsSync(path) && fs.statSync(path).isDirectory()) {
             focuses.push(...createFileTree(path, false, true));
             continue;
         }
@@ -58,7 +57,7 @@ export function createChange(args: string[], dev = false) {
 
     if (dev) {
         log.warning("dev mode enabled, no creating or destroying files");
-        console.log("CHANGE CREATED", { DATE_UNIX_TIME, ID, msg, desc, differences });
+        console.log("CHANGE CREATED", { DATE_UNIX_TIME, ID, msg, desc, diff: differences });
         updateRefTree(REF_PATH, differences);
 
         return;
