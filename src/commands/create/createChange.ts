@@ -1,103 +1,13 @@
 import fs from "fs";
 import sha from "sha1";
 
-import { VECO_DIR, FOCUSFILE_PATH, IGNOREFILE_PATH } from "../../constants";
+import { VECO_DIR, FOCUSFILE_PATH } from "../../constants";
+import { File, Difference } from "../../interfaces";
 import { log } from "../../utils";
 
-interface File {
-    name: string;
-    path: string;
-    content: string;
-}
-
-interface Difference {
-    operation: "MOD" | "DEL" | "INIT",
-    file: File,
-    newFile?: File
-}
-
-function logUsage() {
-    console.log("Usage: 'veco create change <-M/msg/--message> {message} <-D/desc/--description> {description}'");
-}
-
-function createFileTree(root: string, isRef: boolean = false, isFilenameTree = false): (string | File)[] {
-    const directoryContents = fs.readdirSync(root);
-    const tree = [];
-
-    for (const filename of directoryContents) {
-        const path = `${root}/${filename}`;
-        const fileIsDir = fs.statSync(path).isDirectory();
-
-        if (fileIsDir) {
-            if (filename === ".veco") continue;
-            if (fs.existsSync(IGNOREFILE_PATH)) {
-                const ignores = fs.readFileSync(IGNOREFILE_PATH).toString().split("\n");
-
-                if (ignores.includes(path)) continue;
-            }
-
-            tree.push(...createFileTree(path, isRef, isFilenameTree));
-
-            continue;
-        }
-
-        if (isFilenameTree) {
-            tree.push(path);
-        } else {
-            tree.push({
-                name: filename,
-                path: isRef ? path.split(".veco/ref/").join("") : path,
-                content: fs.readFileSync(path).toString()
-            })
-        }
-
-    }
-
-    return tree;
-}
-
-function compareTwoTrees(treeA: File[], treeB: File[]): Difference[] | null {
-    if (JSON.stringify(treeA) === JSON.stringify(treeB)) {
-        return null;
-    }
-
-    const differences: Difference[] = [];
-    let supposedTreeBLength = treeA.length;
-
-    for (const fileA of treeA) {
-        const { path: pathA, content: contentA } = fileA;
-        const fileB = treeB.find(({ path: pathB }) => pathA === pathB);
-
-        if (!fileB) {
-            differences.push({ operation: "DEL", file: fileA });
-            supposedTreeBLength--;
-
-            continue;
-        }
-
-        if (contentA !== fileB.content) {
-            differences.push({ operation: "MOD", file: fileA, newFile: fileB });
-            continue;
-        }
-    }
-
-    if (treeB.length > supposedTreeBLength) {
-        for (const fileB of treeB) {
-            const { path: pathB } = fileB;
-            const fileA = treeA.find(({ path: pathA }) => pathA === pathB);
-
-            if (fileA) continue;
-
-            differences.push({ operation: "INIT", file: fileB });
-        }
-    }
-
-    return differences.length > 0 ? differences : null;
-}
-
-function compileLastChange(order: string[]): File[] {
-    return [];
-}
+import { createFileTree } from "./createFileTree";
+import { compareTwoTrees } from "./compareTwoTrees";
+import { logUsage } from "./logUsage";
 
 export function createChange(args: string[]) {
     const DATE_UNIX_TIME: number = Date.now();
