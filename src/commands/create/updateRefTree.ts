@@ -16,23 +16,6 @@ function mkdirRecursive(path: string) {
     fs.mkdirSync(path);
 }
 
-function recursivelyReadDirectory(path: string): string[] {
-    let contents: string[] = [];
-
-    let dirContents = fs.readdirSync(path);
-
-    for (const file of dirContents) {
-        if (fs.statSync(`${path}/${file}`).isDirectory()) {
-            contents.push(...recursivelyReadDirectory(`${path}/${file}`));
-            continue;
-        }
-
-        contents.push(`${path}/${file}`);
-    }
-
-    return contents;
-}
-
 function parseIgnores(ignores: string[]) {
     let parsedIgnores = [];
 
@@ -50,14 +33,14 @@ function parseIgnores(ignores: string[]) {
         if (!fs.existsSync(parsedPath)) continue;
 
         if (fs.statSync(parsedPath).isDirectory()) {
-            parsedIgnores.push(...recursivelyReadDirectory(parsedPath));
+            parsedIgnores.push(...(createFileTree(parsedPath, false, true) as string[]));
             continue;
         }
 
         parsedIgnores.push(parsedPath);
     }
 
-    return parsedIgnores
+    return parsedIgnores;
 }
 
 
