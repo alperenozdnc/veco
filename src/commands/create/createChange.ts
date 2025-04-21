@@ -48,7 +48,7 @@ export function createChange(args: string[], dev = false) {
         }
     }
 
-    if (!differences) {
+    if (differences.length === 0) {
         log.error("nothing was changed");
         console.log("Aborting...");
         return;
