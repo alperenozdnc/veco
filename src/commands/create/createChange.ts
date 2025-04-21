@@ -1,26 +1,20 @@
 import fs from "fs";
 import sha from "sha1";
 
-import { VECO_DIR, FOCUSFILE_PATH } from "../../constants";
+import { VECO_DIR, FOCUSFILE_PATH, REF_PATH } from "../../constants";
 import { File, Difference } from "../../interfaces";
 import { log } from "../../utils";
 
 import { createFileTree } from "./createFileTree";
 import { compareTwoTrees } from "./compareTwoTrees";
 import { getMsgAndDesc } from "./getMsgAndDesc";
+import { updateRefTree } from "./updateRefTree";
 
 export function createChange(args: string[], dev = false) {
     const DATE_UNIX_TIME: number = Date.now();
     const ID = sha(DATE_UNIX_TIME.toString()).substring(0, 10);
-    let REF_TREE = createFileTree(`${VECO_DIR}/.veco/ref`, true) as File[];
+    let REF_TREE = createFileTree(REF_PATH, true) as File[];
     const { msg, desc, isDescProvided } = getMsgAndDesc(args);
-
-    if (fs.existsSync(`${VECO_DIR}/.veco/order`)) {
-        const order: string[] = fs.readFileSync(`${VECO_DIR}/.veco/order`).toString().split("\n");
-
-        // TODO: CompileLastChange
-        // REF_TREE = CompileLastChange(order);
-    }
 
     const CURR_TREE = createFileTree(`${VECO_DIR}`) as File[];
 
@@ -49,7 +43,7 @@ export function createChange(args: string[], dev = false) {
         const path = diff.file.path;
 
         if (focuses.includes(path) || diff.operation === "INIT") {
-            differences.push(diff); ``
+            differences.push(diff);
             continue;
         }
     }
@@ -88,6 +82,8 @@ export function createChange(args: string[], dev = false) {
 
     fs.writeFileSync(`${VECO_DIR}/.veco/dates/${ID}`, DATE_UNIX_TIME.toString());
     fs.appendFileSync(`${VECO_DIR}/.veco/order`, `${ID}\n`);
+
+    updateRefTree(REF_PATH, differences);
 
     fs.rmSync(FOCUSFILE_PATH);
 }
