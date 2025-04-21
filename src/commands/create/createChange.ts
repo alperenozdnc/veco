@@ -18,6 +18,8 @@ export function createChange(args: string[]) {
     if (fs.existsSync(`${VECO_DIR}/.veco/order`)) {
         const order: string[] = fs.readFileSync(`${VECO_DIR}/.veco/order`).toString().split("\n");
 
+        console.log({ order });
+
         // TODO: CompileLastChange
         // REF_TREE = CompileLastChange(order);
     }
@@ -29,14 +31,18 @@ export function createChange(args: string[]) {
     let focusesFileContent = fs.readFileSync(FOCUSFILE_PATH).toString().split("\n");
     let focuses = [];
 
-    for (let focusPath of focusesFileContent) {
-        if (!focusPath) continue;
+    for (let i = 0; i < focusesFileContent.length; i++) {
+        const path = focusesFileContent[i];
 
-        if (fs.statSync(focusPath).isDirectory()) {
-            focuses.push(...createFileTree(focusPath, false, true));
+        if (!path) continue;
+        if (!fs.existsSync(path)) continue;
+
+        if (fs.statSync(path).isDirectory()) {
+            focuses.push(...createFileTree(path, false, true));
+            continue;
         }
 
-        focuses.push(focusPath);
+        focuses.push(path);
     }
 
     const differences: Difference[] = [];
