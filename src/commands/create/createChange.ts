@@ -9,7 +9,7 @@ import { createFileTree } from "./createFileTree";
 import { compareTwoTrees } from "./compareTwoTrees";
 import { getMsgAndDesc } from "./getMsgAndDesc";
 
-export function createChange(args: string[]) {
+export function createChange(args: string[], dev = false) {
     const DATE_UNIX_TIME: number = Date.now();
     const ID = sha(DATE_UNIX_TIME.toString()).substring(0, 10);
     let REF_TREE = createFileTree(`${VECO_DIR}/.veco/ref`, true) as File[];
@@ -17,8 +17,6 @@ export function createChange(args: string[]) {
 
     if (fs.existsSync(`${VECO_DIR}/.veco/order`)) {
         const order: string[] = fs.readFileSync(`${VECO_DIR}/.veco/order`).toString().split("\n");
-
-        console.log({ order });
 
         // TODO: CompileLastChange
         // REF_TREE = CompileLastChange(order);
@@ -51,7 +49,7 @@ export function createChange(args: string[]) {
         const path = diff.file.path;
 
         if (focuses.includes(path) || diff.operation === "INIT") {
-            differences.push(diff);
+            differences.push(diff); ``
             continue;
         }
     }
@@ -63,6 +61,13 @@ export function createChange(args: string[]) {
     }
 
     if (!fs.existsSync(FOCUSFILE_PATH)) return log.error("no file is focused, nothing to change")
+
+    if (dev) {
+        log.warning("dev mode enabled, no creating or destroying files");
+        console.log("CHANGE CREATED", { DATE_UNIX_TIME, ID, msg, desc, differences });
+
+        return;
+    }
 
     fs.mkdirSync(`${VECO_DIR}/.veco/changes/${ID}`);
     fs.writeFileSync(`${VECO_DIR}/.veco/changes/${ID}/MOD`, "[]");
