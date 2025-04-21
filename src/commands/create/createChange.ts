@@ -88,4 +88,6 @@ export function createChange(args: string[], dev = false) {
 
     fs.writeFileSync(`${VECO_DIR}/.veco/dates/${ID}`, DATE_UNIX_TIME.toString());
     fs.appendFileSync(`${VECO_DIR}/.veco/order`, `${ID}\n`);
+
+    fs.rmSync(FOCUSFILE_PATH);
 }
