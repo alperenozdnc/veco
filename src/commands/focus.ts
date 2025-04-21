@@ -26,7 +26,7 @@ export function focus(args: string[]) {
         return;
     }
 
-    const focusfileContentString = fs.readFileSync(FOCUSFILE_PATH).toString();
+    const focusfileContentString = fs.existsSync(FOCUSFILE_PATH) ? fs.readFileSync(FOCUSFILE_PATH).toString() : "";
     let focusfileContent = focusfileContentString.split("\n");
 
     let ignorefileContent: string[] = [];
