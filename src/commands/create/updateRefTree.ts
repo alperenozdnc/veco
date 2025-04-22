@@ -1,10 +1,11 @@
 import fs from "fs";
-import { dirname as getDirectoryName, basename as getFilename } from "path";
+import { dirname as getDirectoryName } from "path";
 
 import { Difference, File } from "../../interfaces";
-import { IGNOREFILE_PATH, VECO_DIR } from "../../constants";
+import { VECO_DIR } from "../../constants";
 
 import { createFileTree } from "./createFileTree";
+import { parseIgnores } from "../../utils";
 
 function mkdirRecursive(path: string) {
     let dirname = getDirectoryName(path);
@@ -16,49 +17,15 @@ function mkdirRecursive(path: string) {
     fs.mkdirSync(path);
 }
 
-function parseIgnores(ignores: string[]) {
-    let parsedIgnores = [];
-
-    for (const ignore of ignores) {
-        let dirname = getDirectoryName(ignore);
-
-        if (dirname === ".") {
-            dirname = VECO_DIR;
-        } else {
-            dirname = `${VECO_DIR}/${dirname}`;
-        }
-
-        let parsedPath = `${dirname}/${getFilename(ignore)}`;
-
-        if (!fs.existsSync(parsedPath)) continue;
-
-        if (fs.statSync(parsedPath).isDirectory()) {
-            parsedIgnores.push(...(createFileTree(parsedPath, false, true) as string[]));
-            continue;
-        }
-
-        parsedIgnores.push(parsedPath);
-    }
-
-    return parsedIgnores;
-}
-
 export function updateRefTree(refPath: string, differences: Difference[]) {
     let refTree = createFileTree(refPath, true) as unknown as File[];
-    let ignoredFiles: string[] = fs.existsSync(IGNOREFILE_PATH) ? fs.readFileSync(IGNOREFILE_PATH).toString().split("\n") : [];
-
-    // removes newline at file end
-    ignoredFiles.splice(ignoredFiles.length - 1, 1);
-
-    // turn every ignore file to its absolute path
-    // recursively read directory ignores
-    ignoredFiles = parseIgnores(ignoredFiles);
+    const ignores = parseIgnores();
 
     for (let i = 0; i < differences.length; i++) {
         const diff = differences[i];
         const { operation, file, newFile } = diff;
 
-        if (ignoredFiles.includes(file.path)) continue;
+        if (ignores.includes(file.path)) continue;
 
         switch (operation) {
             case "MOD":
@@ -96,7 +63,7 @@ export function updateRefTree(refPath: string, differences: Difference[]) {
         let newPath = path.replace(`${VECO_DIR}`, "").substring(1);
         let dirname = getDirectoryName(path).replace(`${VECO_DIR}`, "").substring(1);
 
-        if (ignoredFiles.includes(path)) continue;
+        if (ignores.includes(path)) continue;
 
         if (dirname && !fs.existsSync(`${refPath}/${dirname}`)) {
             mkdirRecursive(`${refPath}/${dirname}`);

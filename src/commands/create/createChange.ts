@@ -3,7 +3,7 @@ import sha from "sha1";
 
 import { VECO_DIR, FOCUSFILE_PATH, REF_PATH } from "../../constants";
 import { File, Difference } from "../../interfaces";
-import { log } from "../../utils";
+import { log, parseIgnores } from "../../utils";
 
 import { createFileTree } from "./createFileTree";
 import { compareTwoTrees } from "./compareTwoTrees";
@@ -39,11 +39,12 @@ export function createChange(args: string[], dev = false) {
     }
 
     const differences: Difference[] = [];
+    const ignores = parseIgnores();
 
     for (const diff of allDifferences!) {
         const path = diff.file.path;
 
-        if (focuses.includes(path)) {
+        if (focuses.includes(path) && !ignores.includes(path)) {
             differences.push(diff);
             continue;
         }
