@@ -20,6 +20,8 @@ export function createChange(args: string[], dev = false) {
 
     const allDifferences = compareTwoTrees(REF_TREE, CURR_TREE);
 
+    if (!fs.existsSync(FOCUSFILE_PATH)) return log.error("no files put on focus, skipping...");
+
     let focusesFileContent = fs.readFileSync(FOCUSFILE_PATH).toString().split("\n");
     let focuses = [];
 
