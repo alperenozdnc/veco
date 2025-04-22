@@ -43,7 +43,6 @@ function parseIgnores(ignores: string[]) {
     return parsedIgnores;
 }
 
-
 export function updateRefTree(refPath: string, differences: Difference[]) {
     let refTree = createFileTree(refPath, true) as unknown as File[];
     let ignoredFiles: string[] = fs.existsSync(IGNOREFILE_PATH) ? fs.readFileSync(IGNOREFILE_PATH).toString().split("\n") : [];
@@ -54,14 +53,6 @@ export function updateRefTree(refPath: string, differences: Difference[]) {
     // turn every ignore file to its absolute path
     // recursively read directory ignores
     ignoredFiles = parseIgnores(ignoredFiles);
-
-    for (let i = 0; i < refTree.length; i++) {
-        const refFile = refTree[i];
-
-        if (!ignoredFiles.includes(refFile.path)) continue;
-
-        refTree.splice(i, 1);
-    }
 
     for (let i = 0; i < differences.length; i++) {
         const diff = differences[i];
@@ -104,6 +95,8 @@ export function updateRefTree(refPath: string, differences: Difference[]) {
         const { path, content } = file;
         let newPath = path.replace(`${VECO_DIR}`, "").substring(1);
         let dirname = getDirectoryName(path).replace(`${VECO_DIR}`, "").substring(1);
+
+        if (ignoredFiles.includes(path)) continue;
 
         if (dirname && !fs.existsSync(`${refPath}/${dirname}`)) {
             mkdirRecursive(`${refPath}/${dirname}`);
