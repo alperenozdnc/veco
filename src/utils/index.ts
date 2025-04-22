@@ -3,3 +3,4 @@ export { checkVecoDir } from "./checkVecoDir";
 export { getVecoDir } from "./getVecoDir";
 export { handleYesNoInput } from "./handleYesNoInput";
 export { parseIgnores } from "./parseIgnores";
+export { parseBytes } from "./parseBytes";
