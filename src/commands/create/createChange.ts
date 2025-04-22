@@ -3,7 +3,7 @@ import sha from "sha1";
 
 import { VECO_DIR, FOCUSFILE_PATH, REF_PATH } from "../../constants";
 import { File, Difference } from "../../interfaces";
-import { log, parseIgnores } from "../../utils";
+import { log, parseIgnores, parseBytes } from "../../utils";
 
 import { createFileTree } from "./createFileTree";
 import { compareTwoTrees } from "./compareTwoTrees";
@@ -90,10 +90,25 @@ export function createChange(args: string[], dev = false) {
 
     fs.rmSync(FOCUSFILE_PATH);
 
-    console.log(`change created successfully [${ID}]`);
-    console.log(`${msg}`);
+    console.log(`change created successfully [${ID}] ${msg}`);
 
     if (isDescProvided) {
         console.log(`${desc}`);
+    }
+
+    console.log("operations :")
+
+    for (const diff of differences) {
+        let isMODoperation = false;
+        let deltaChar = 0;
+
+        if (diff.operation === "MOD") {
+            deltaChar = diff.newFile!.content.length - diff.file.content.length;
+
+            isMODoperation = true;
+            console.log(`  MOD -> '${diff.file.name}' (${deltaChar > 0 ? "+" : ""}${deltaChar} chars)`)
+        } else {
+            console.log(`  ${diff.operation} -> '${diff.file.name}' (${parseBytes(fs.statSync(diff.file.path).size)}) `)
+        }
     }
 }
