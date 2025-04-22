@@ -80,8 +80,8 @@ export function createChange(args: string[], dev = false) {
         fs.writeFileSync(path, JSON.stringify(newFileData));
     }
 
-    fs.writeFileSync(`${VECO_DIR}/.veco/messages/${ID}`, `${msg}\n`);
-    if (isDescProvided) fs.writeFileSync(`${VECO_DIR}/.veco/messages/${ID}`, `\n${desc}`);
+    fs.writeFileSync(`${VECO_DIR}/.veco/messages/${ID}`, `${msg}`);
+    if (isDescProvided) fs.appendFileSync(`${VECO_DIR}/.veco/messages/${ID}`, `\n\n${desc}`);
 
     fs.writeFileSync(`${VECO_DIR}/.veco/dates/${ID}`, DATE_UNIX_TIME.toString());
     fs.appendFileSync(`${VECO_DIR}/.veco/order`, `${ID}\n`);
