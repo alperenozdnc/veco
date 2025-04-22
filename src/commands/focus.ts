@@ -7,7 +7,7 @@ function reformatPath(path: string) {
     let newPath = "";
 
     if (path === "." || path === "./") {
-        newPath = `${path}`;
+        newPath = `${process.cwd()}`;
     } else {
         newPath = `${process.cwd()}/${path}`;
     }
@@ -41,7 +41,7 @@ export function focus(args: string[]) {
     }
 
     if (args[0] === "clean") {
-        console.log("Removing all focused paths...")
+        console.log("Removing all fonode_modules cused paths...")
 
         fs.writeFileSync(FOCUSFILE_PATH, "");
 
