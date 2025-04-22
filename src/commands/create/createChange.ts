@@ -86,4 +86,11 @@ export function createChange(args: string[], dev = false) {
     updateRefTree(REF_PATH, differences);
 
     fs.rmSync(FOCUSFILE_PATH);
+
+    console.log(`change created successfully [${ID}]`);
+    console.log(`${msg}`);
+
+    if (isDescProvided) {
+        console.log(`${desc}`);
+    }
 }
