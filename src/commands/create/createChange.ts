@@ -59,7 +59,7 @@ export function createChange(args: string[], dev = false) {
 
     if (dev) {
         log.warning("dev mode enabled, no creating or destroying files");
-        console.log("CHANGE CREATED", { DATE_UNIX_TIME, ID, msg, desc, diff: differences });
+        console.log("CHANGE CREATED", { DATE_UNIX_TIME, ID, msg, desc, differences });
         updateRefTree(REF_PATH, differences);
 
         return;
