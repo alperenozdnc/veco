@@ -47,7 +47,8 @@ export function updateRefTree(refPath: string, differences: Difference[]) {
 
                 continue;
             case "DEL":
-                refTree.splice(i, 1);
+                refTree = refTree.filter((refFile) => refFile.path !== file.path);
+
                 continue;
             case "INIT":
                 refTree.push(file);
