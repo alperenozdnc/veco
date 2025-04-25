@@ -44,6 +44,11 @@ export function createChange(args: string[], dev = false) {
     for (const diff of allDifferences!) {
         const path = diff.file.path;
 
+        if (!fs.existsSync(path) && diff.operation === "DEL") {
+            differences.push(diff);
+            continue;
+        }
+
         if (focuses.includes(path) && !ignores.includes(path)) {
             differences.push(diff);
             continue;
