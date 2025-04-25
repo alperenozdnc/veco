@@ -1,7 +1,7 @@
 import { Action } from "../interfaces";
 import { checkVecoDir, log } from "../utils";
 
-export function handleCmd(actions: Action[], cmd: string, cmdType: "create" | "delete" | "view") {
+export function handleCmd(actions: Action[], cmd: string, cmdType: string) {
     const isProject = checkVecoDir();
 
     if (isProject || cmdType === "create" && cmd === "project") {
