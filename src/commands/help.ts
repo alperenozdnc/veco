@@ -2,7 +2,7 @@ import { Command } from "../interfaces";
 import { log } from "../utils";
 
 export function help(commands: Command[]) {
-    const REPO_URL = "https://github.com/alperenozdnc/version-control";
+    const REPO_URL = "https://github.com/alperenozdnc/veco";
     const LICENSE_URL = "https://www.gnu.org/licenses/gpl-3.0.en.html";
 
     log.usage("veco [COMMAND]... [OPTIONS]...", [], [], []);
