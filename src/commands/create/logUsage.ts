@@ -1,3 +1,11 @@
+import { log } from "../../utils";
+
 export function logUsage() {
-    console.log("Usage: 'veco create change <-M/msg/--message> {message} <-D/desc/--description> {description}'");
+    log.usage(
+        "veco %cmd0 %cmd1 %opt0 %arg0 %opt1 %arg1",
+        ["create", "change"],
+        [["-M", "msg", "--message"],
+        ["-D", "desc", "--description"]],
+        ["message", "description"]
+    );
 }

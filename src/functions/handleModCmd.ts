@@ -10,11 +10,11 @@ export function handleModCmd(actions: Action[], cmd: string, modType: "create" |
         }
 
         log.error(`invalid ${modType} action '${cmd}'`);
-        console.log(`Usage: '${modType} {${actions.map((action) => action.name).join("|")}}'`)
+        log.usage(`veco %cmd0 %arg0`, [modType], [actions.map(action => action.name)], []);
     } else {
         log.error(`no veco project found in this or any parent directories`);
         console.log(`\nYou must run ${modType} commands inside a project.`);
-        console.log("'veco create project' to create a project.");
+        log.usage(`veco %cmd0 %cmd1 to create a project`, ["create", "project"], [], []);
     }
 }
 
