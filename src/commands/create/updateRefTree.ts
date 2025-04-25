@@ -32,7 +32,7 @@ export function updateRefTree(refPath: string, differences: Difference[]) {
                 let j: number = 0;
 
                 let modifiedFile = refTree.find((fileB, k) => {
-                    if (file.name === fileB.name) {
+                    if (file.path === fileB.path) {
                         j = k;
                         return true;
                     }
