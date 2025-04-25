@@ -1,4 +1,4 @@
-import { handleModCmd } from "../../functions";
+import { handleCmd } from "../../functions";
 import { Action } from "../../interfaces";
 
 import { deleteIgnore } from "./deleteIgnore";
@@ -15,5 +15,5 @@ export function Delete(args: string[]) {
         { name: "ignore", run: () => deleteIgnore(restOfArgs) },
     ]
 
-    handleModCmd(actions, cmd, "delete");
+    handleCmd(actions, cmd, "delete");
 }

@@ -1,1 +1,1 @@
-export { handleModCmd } from "./handleModCmd";
+export { handleCmd } from "./handleCmd";

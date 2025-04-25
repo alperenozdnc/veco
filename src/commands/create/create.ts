@@ -1,4 +1,4 @@
-import { handleModCmd } from "../../functions";
+import { handleCmd } from "../../functions";
 import { Action } from "../../interfaces";
 
 import { createChange } from "./createChange";
@@ -15,5 +15,5 @@ export function create(args: string[]) {
         { name: "ignore", run: () => createIgnore(restOfArgs) },
     ]
 
-    handleModCmd(actions, cmd, "create");
+    handleCmd(actions, cmd, "create");
 }
