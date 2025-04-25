@@ -11,5 +11,8 @@
     "readline-sync": "^1.4.10",
     "sha1": "^1.1.1",
     "typescript": "^5.8.3"
+  },
+  "dependencies": {
+    "inquirer": "^12.6.0"
   }
 }
