@@ -112,8 +112,10 @@ export function createChange(args: string[], dev = false) {
 
             isMODoperation = true;
             console.log(`  MOD -> '${diff.file.name}' (${deltaChar > 0 ? "+" : ""}${deltaChar} chars)`)
-        } else {
+        } else if (diff.operation === "INIT") {
             console.log(`  ${diff.operation} -> '${diff.file.name}' (${parseBytes(fs.statSync(diff.file.path).size)}) `)
+        } else {
+            console.log(`  ${diff.operation} -> '${diff.file.name}'`)
         }
     }
 }
