@@ -8,12 +8,26 @@ export function help(commands: Command[]) {
     log.usage("veco [COMMAND]... [OPTIONS]...", [], [], []);
     console.log("A basic and archaic version control program.\n")
 
-    const output = [];
+    const lines: [string, string][] = [];
+    const output: string[] = [];
 
     for (const command of commands) {
         const callers: string = command.callers.join(", ");
 
-        output.push(`${callers}  ->  ${command.description}`);
+        lines.push([`${callers}  ->  `, command.description]);
+    }
+
+    const lengths = lines.map((line) => line[0].length + line[1].length);
+    const maxLength = Math.max(...lengths);
+
+    for (const line of lines) {
+        const minLength = `${line[0]}${line[1]}`.length;
+
+        if (minLength < maxLength) {
+            output.push(`${line[0]}${" ".repeat(maxLength - minLength)}${line[1]}`);
+        } else {
+            output.push(`${line[0]}${line[1]}`);
+        }
     }
 
     padLeft(output);
