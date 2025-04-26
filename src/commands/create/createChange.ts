@@ -8,7 +8,7 @@ import { log, parseIgnores, printDiff, readFocuses } from "../../utils";
 import { createFileTree } from "./createFileTree";
 import { compareTwoTrees } from "./compareTwoTrees";
 import { getMsgAndDesc } from "./getMsgAndDesc";
-import { updateRefTree } from "./updateRefTree";
+import { updateTree } from "./updateTree";
 
 export function createChange(args: string[], dev = false) {
     const DATE_UNIX_TIME: number = Date.now();
@@ -51,7 +51,7 @@ export function createChange(args: string[], dev = false) {
     if (dev) {
         log.warning("dev mode enabled, no creating or destroying files");
         console.log("CHANGE CREATED", { DATE_UNIX_TIME, ID, msg, desc, differences });
-        updateRefTree(REF_PATH, differences);
+        updateTree(REF_PATH, differences);
 
         return;
     }
