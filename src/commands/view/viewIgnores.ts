@@ -1,7 +1,6 @@
 import fs from "fs";
 import { IGNOREFILE_PATH } from "../../constants";
-import { padLeft } from "../../utils/padLeft";
-import { log } from "../../utils";
+import { log, padLeft } from "../../utils";
 
 export function viewIgnores() {
     if (!fs.existsSync(IGNOREFILE_PATH)) return log.error("no ignore file, create .vecoig file to see ignores");
