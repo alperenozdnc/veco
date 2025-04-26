@@ -1,10 +1,12 @@
 import fs from "fs";
 import { select } from '@inquirer/prompts';
 
-import { checkVecoDir, log } from "../../utils";
-import { IGNOREFILE_PATH, VECO_DIR } from "../../constants";
-import { Action } from "../../interfaces";
+import { log, parseIgnores, readFocuses, printDiff } from "../../utils";
+import { IGNOREFILE_PATH, REF_PATH, VECO_DIR } from "../../constants";
+import { Action, File } from "../../interfaces";
 import { handleCmd } from "../../functions";
+import { compareTwoTrees } from "../create/compareTwoTrees";
+import { createFileTree } from "../create/createFileTree";
 
 interface Change {
     ID: string;
@@ -14,6 +16,12 @@ interface Change {
     MOD?: string;
     INIT?: string;
     DEL?: string;
+}
+
+type Scope = "all" | "focused-only" | "unfocused-only";
+
+function isStrTypeScope(str: any): str is Scope {
+    return ["all", "focused-only", "unfocused-only"].includes(str);
 }
 
 function viewIgnores() {
@@ -136,6 +144,60 @@ async function viewChanges() {
     }
 }
 
+function viewDiff(arg: string) {
+    if (!isStrTypeScope(arg)) return log.error("enter either all, focused-only, or unfocused-only");
+
+    const REF_TREE = createFileTree(REF_PATH, true) as File[];
+    const CURR_TREE = createFileTree(`${VECO_DIR}`) as File[];
+
+    const differences = compareTwoTrees(REF_TREE, CURR_TREE);
+    const ignores = parseIgnores();
+
+    if (arg === "all") {
+        for (const diff of differences!) {
+            if (ignores.includes(diff.file.path)) {
+                continue;
+            }
+
+            printDiff(diff);
+        }
+
+        return;
+    }
+
+    const refFocuses = readFocuses(REF_PATH);
+    const focuses = readFocuses();
+
+    for (const diff of differences!) {
+        let path = diff.file.path;
+
+        if (arg === "unfocused-only") {
+            if (!refFocuses) {
+                printDiff(diff);
+                continue;
+            }
+
+            if (ignores.includes(path)) continue;
+
+            path = path.replace(VECO_DIR, REF_PATH);
+
+            if (refFocuses.includes(path)) continue;
+
+            printDiff(diff);
+            continue;
+        }
+
+        if (!refFocuses) {
+            return log.error("no focusfile provided");
+        }
+
+        if (arg === "focused-only" && focuses!.includes(path) && !ignores.includes(path)) {
+            printDiff(diff);
+            continue;
+        }
+    }
+}
+
 export async function view(args: string[]) {
     const cmd = args[0];
     const restOfArgs = args.slice(1);
@@ -143,8 +205,8 @@ export async function view(args: string[]) {
     const actions: Action[] = [
         { name: "ignores", run: () => viewIgnores() },
         { name: "changes", run: () => viewChanges() },
+        { name: "diff", run: () => viewDiff(restOfArgs[0]) },
     ]
 
     handleCmd(actions, cmd, "view");
-
 }
