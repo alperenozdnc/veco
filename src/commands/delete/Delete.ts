@@ -3,6 +3,7 @@ import { Action } from "../../interfaces";
 
 import { deleteIgnore } from "./deleteIgnore";
 import { deleteProject } from "./deleteProject";
+import { deleteDiff } from "./deleteDiff";
 
 // NOT `delete` because it's a keyword
 export function Delete(args: string[]) {
@@ -11,7 +12,7 @@ export function Delete(args: string[]) {
 
     const actions: Action[] = [
         { name: "project", run: () => deleteProject() },
-        { name: "change", run: () => { } },
+        { name: "diff", run: () => deleteDiff() },
         { name: "ignore", run: () => deleteIgnore(restOfArgs) },
     ]
 
