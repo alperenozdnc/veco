@@ -1,7 +1,7 @@
 {
   "scripts": {
     "build": "tsc && pkg --targets node18-linux-x64 ./build/index.js && mv index ~/.local/bin/veco",
-    "dev": "tsc -w",
+    "dev": "nodemon ./build/index.js",
     "exec": "node ./build/index.js"
   },
   "devDependencies": {
@@ -10,6 +10,7 @@
     "@types/sha1": "^1.1.5",
     "readline-sync": "^1.4.10",
     "sha1": "^1.1.1",
+    "ts-node": "^10.9.2",
     "typescript": "^5.8.3"
   },
   "dependencies": {

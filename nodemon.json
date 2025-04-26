@@ -1,0 +1,5 @@
+{
+  "watch": ["src"],
+  "ext": "ts",
+  "exec": "tsc && pkg --targets node18-linux-x64 ./build/index.js && mv index ~/.local/bin/veco"
+}
