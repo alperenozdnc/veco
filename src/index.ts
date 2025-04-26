@@ -22,7 +22,7 @@ function main(args: string[]) {
         {
             callers: ["view", "-V", "--view"],
             action: () => view(args.slice(1)),
-            description: "Handles all view operations. Example: view changes, view change <id>, ..."
+            description: "Handles all view operations. Example: view changes, view ignores, ..."
         },
         {
             callers: ["focus", "-F", "--focus"],
