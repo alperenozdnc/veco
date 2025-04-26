@@ -5,7 +5,7 @@
     "exec": "node ./build/index.js"
   },
   "devDependencies": {
-    "@types/node": "^22.14.1",
+    "@types/node": "^22.15.2",
     "@types/readline-sync": "^1.4.8",
     "@types/sha1": "^1.1.5",
     "readline-sync": "^1.4.10",
