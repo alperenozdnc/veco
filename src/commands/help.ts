@@ -1,5 +1,5 @@
 import { Command } from "../interfaces";
-import { log } from "../utils";
+import { log, padLeft } from "../utils";
 
 export function help(commands: Command[]) {
     const REPO_URL = "https://github.com/alperenozdnc/veco";
@@ -8,11 +8,15 @@ export function help(commands: Command[]) {
     log.usage("veco [COMMAND]... [OPTIONS]...", [], [], []);
     console.log("A basic and archaic version control program.\n")
 
+    const output = [];
+
     for (const command of commands) {
         const callers: string = command.callers.join(", ");
 
-        console.log("  ", callers, "  ->  ", command.description);
+        output.push(`${callers}  ->  ${command.description}`);
     }
+
+    padLeft(output);
 
     console.log(`\nFor online documentation: <${REPO_URL}>`);
     console.log(`For seeing the license: <${LICENSE_URL}>`)
