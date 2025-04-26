@@ -7,6 +7,7 @@ import { Action, File } from "../../interfaces";
 import { handleCmd } from "../../functions";
 import { compareTwoTrees } from "../create/compareTwoTrees";
 import { createFileTree } from "../create/createFileTree";
+import { padLeft } from "../../utils/padLeft";
 
 interface Change {
     ID: string;
@@ -30,11 +31,7 @@ function viewIgnores() {
     const IGNORES = fs.readFileSync(IGNOREFILE_PATH).toString().split("\n");
     IGNORES.pop();
 
-    console.log(`ignores (${IGNORES.length} total): `);
-
-    for (const ignore of IGNORES) {
-        console.log(`  ${ignore}`);
-    }
+    padLeft(IGNORES);
 }
 
 async function viewChanges() {
