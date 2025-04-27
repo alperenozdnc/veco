@@ -40,6 +40,33 @@ veco create change {-M, msg, --message} [message] {-D, desc, --dsescription} [de
 
 Accumulates all focused diffs into a change and records it.
 
+### veco delete [project/diff/ignore]
+The ultimate command for any kind of deletion action.
+
+<br />
+
+```
+veco delete project
+```
+
+Deletes the current veco project in path.
+
+<br />
+
+```
+veco delete diff
+```
+
+Undoes any diffs that didn't make it into a change yet.
+
+<br />
+
+```
+veco delete ignore [path1] [path2] [path3]...
+```
+
+Unignores given paths on any filesystem operation.
+
 ## how it works
 
 ## license
