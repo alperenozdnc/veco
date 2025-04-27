@@ -30,6 +30,14 @@ export function createChange(args: string[], dev = false) {
         const path = diff.file.path;
 
         if (!fs.existsSync(path) && diff.operation === "DEL") {
+            // Try to restore content from trash
+            const trashPath = `${VECO_DIR}/.veco/.trash/${path.replace(`${VECO_DIR}/`, "")}`;
+            if (fs.existsSync(trashPath)) {
+                const content = fs.readFileSync(trashPath, "utf-8");
+                diff.file.content = content;
+            } else {
+                log.warning(`Missing backup for deleted file: ${path}`);
+            }
             differences.push(diff);
             continue;
         }
@@ -46,13 +54,12 @@ export function createChange(args: string[], dev = false) {
         return;
     }
 
-    if (!fs.existsSync(FOCUSFILE_PATH)) return log.error("no file is focused, nothing to change")
+    if (!fs.existsSync(FOCUSFILE_PATH)) return log.error("no file is focused, nothing to change");
 
     if (dev) {
         log.warning("dev mode enabled, no creating or destroying files");
         console.log("CHANGE CREATED", { DATE_UNIX_TIME, ID, msg, desc, differences });
         updateTree(REF_PATH, differences);
-
         return;
     }
 
@@ -80,13 +87,19 @@ export function createChange(args: string[], dev = false) {
 
     fs.rmSync(FOCUSFILE_PATH);
 
+    // 🧹 Cleanup trash after successful save
+    const TRASH_DIR = `${VECO_DIR}/.veco/.trash`;
+    if (fs.existsSync(TRASH_DIR)) {
+        fs.rmSync(TRASH_DIR, { recursive: true, force: true });
+    }
+
     console.log(`change created successfully [${ID}] ${msg}`);
 
     if (isDescProvided) {
         console.log(`${desc}`);
     }
 
-    console.log("operations :")
+    console.log("operations :");
 
     for (const diff of differences) {
         printDiff(diff);

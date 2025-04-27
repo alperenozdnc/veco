@@ -9,49 +9,57 @@ import { parseIgnores } from "../../utils";
 
 function mkdirRecursive(path: string) {
     let dirname = getDirectoryName(path);
-
     if (!fs.existsSync(dirname)) {
         mkdirRecursive(dirname);
     }
-
     fs.mkdirSync(path);
 }
 
 export function updateTree(basePath: string, differences: Difference[], isRef = true) {
-    let tree = createFileTree(basePath, true) as unknown as File[];
+    const tree = createFileTree(basePath, true) as File[];
     const ignores = parseIgnores();
 
-    for (let i = 0; i < differences.length; i++) {
-        const diff = differences[i];
+    const TRASH_DIR = `${VECO_DIR}/.veco/.trash`;
+    if (!fs.existsSync(TRASH_DIR)) {
+        fs.mkdirSync(TRASH_DIR, { recursive: true });
+    }
+
+    let updatedTree = [...tree];
+
+    for (const diff of differences) {
         const { operation, file, newFile } = diff;
 
         if (ignores.includes(file.path)) continue;
 
         switch (operation) {
             case "MOD":
-                let j: number = 0;
-
-                let modifiedFile = tree.find((fileB, k) => {
-                    if (file.path === fileB.path) {
-                        j = k;
-                        return true;
+                {
+                    const index = updatedTree.findIndex(refFile => refFile.path === file.path);
+                    if (index !== -1 && newFile) {
+                        updatedTree[index].content = newFile.content;
                     }
-
-                    return false;
-                });
-
-                if (!modifiedFile || !newFile) continue;
-
-                modifiedFile.content = newFile.content;
-                tree[j] = modifiedFile;
-
+                }
                 continue;
             case "DEL":
-                tree = tree.filter((refFile) => refFile.path !== file.path);
+                {
+                    const fullPath = file.path;
+                    if (fs.existsSync(fullPath)) {
+                        const relativeTrashPath = fullPath.replace(`${VECO_DIR}/`, "");
+                        const trashPath = `${TRASH_DIR}/${relativeTrashPath}`;
+                        const trashDirname = getDirectoryName(trashPath);
 
+                        if (!fs.existsSync(trashDirname)) {
+                            mkdirRecursive(trashDirname);
+                        }
+
+                        fs.renameSync(fullPath, trashPath);
+                    }
+                    updatedTree = updatedTree.filter(refFile => refFile.path !== file.path);
+                }
                 continue;
             case "INIT":
-                tree.push(file);
+                updatedTree.push(file);
+                continue;
         }
     }
 
@@ -60,11 +68,10 @@ export function updateTree(basePath: string, differences: Difference[], isRef = 
         fs.mkdirSync(basePath);
     }
 
-    // write every file out to target 
-    for (const file of tree) {
+    for (const file of updatedTree) {
         const { path, content } = file;
-        let newPath = path.replace(`${VECO_DIR}`, "").substring(1);
-        let dirname = getDirectoryName(path).replace(`${VECO_DIR}`, "").substring(1);
+        const newPath = path.replace(`${VECO_DIR}`, "").substring(1);
+        const dirname = getDirectoryName(path).replace(`${VECO_DIR}`, "").substring(1);
 
         if (ignores.includes(path)) continue;
 
@@ -75,5 +82,6 @@ export function updateTree(basePath: string, differences: Difference[], isRef = 
         fs.writeFileSync(`${basePath}/${newPath}`, content);
     }
 
-    return tree;
+    return updatedTree;
 }
+
