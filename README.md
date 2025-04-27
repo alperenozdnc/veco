@@ -5,7 +5,12 @@ not meant to replace any existing version control technologies. Do not contribut
 ## table of contents
 
 - [usage](https://github.com/alperenozdnc/veco)
-- [how it works](https://github.com/alperenozdnc/veco)
+    * [`help`](https://github.com/alperenozdnc/veco?tab=readme-ov-file#veco-help)
+    * [`create`](https://github.com/alperenozdnc/veco?tab=readme-ov-file#veco-create-projectignorechange)
+    * [`delete`](https://github.com/alperenozdnc/veco?tab=readme-ov-file#veco-delete-projectdiffignore)
+    * [`view`](https://github.com/alperenozdnc/veco?tab=readme-ov-file#veco-view-ignoreschangesdiff)
+    * [`focus`](https://github.com/alperenozdnc/veco?tab=readme-ov-file#veco-focus-pathlistcleanremove)
+    * [`revert`](https://github.com/alperenozdnc/veco?tab=readme-ov-file#veco-revert)
 - [license](https://github.com/alperenozdnc/veco)
 
 ## usage
@@ -137,8 +142,6 @@ veco revert [ID]
 ```
 
 Reverts the filesystem to change with the id `ID`
-
-## how it works
 
 ## license
 the code may be distributed, copied, and deleted <br /> over the GPLv3 license. see [LICENSE](https://github.com/alperenozdnc/veco/blob/master/LICENSE) file for details.
