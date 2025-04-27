@@ -69,7 +69,6 @@ export function revertToChange(targetChange: Change) {
     // read all reversed changes, apply them on veco dir one by one
     for (const change of reversedChanges) {
         console.log(`[REVERT LOG] undoing ${change.ID}...`);
-Keep up the awesome work! 🚀
         updateTree(VECO_DIR, [...change.INIT, ...change.MOD, ...change.DEL], false);
     }
 
