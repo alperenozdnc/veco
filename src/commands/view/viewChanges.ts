@@ -5,6 +5,7 @@ import { select } from '@inquirer/prompts';
 
 import { VECO_DIR } from "../../constants";
 import { log } from "../../utils";
+import { revertToChange } from "../../functions";
 
 interface Change {
     ID: string;
@@ -123,7 +124,7 @@ export async function viewChanges() {
 
                 break;
             case "revert":
-                console.log(`Reverting to ${selected.ID}...`)
+                revertToChange(selected.ID);
 
                 break;
             case "cancel":
