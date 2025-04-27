@@ -7,3 +7,4 @@ export { parseBytes } from "./parseBytes";
 export { readFocuses } from "./readFocuses";
 export { printDiff } from "./printDiff";
 export { padLeft } from "./padLeft";
+export { isLastChange } from "./isLastChange";
