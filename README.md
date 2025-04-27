@@ -68,7 +68,7 @@ veco delete ignore [path1] [path2] [path3]...
 Unignores given paths on any filesystem operation.
 
 ### veco view [ignores/changes/diff]
-The ultimate command for any kind of deletion action.
+The ultimate command for any kind of viewing action.
 
 <br />
 
@@ -94,7 +94,7 @@ veco view diff [all/focused-only/unfocused-only]
 Lists any, only focused, or only unfocused diffs that didn't make it into a change.
 
 ### veco focus [[path]/list/clean/remove]
-The ultimate command for any kind of deletion action.
+The command to manipulate which files are in or not in focus.
 
 <br />
 
@@ -126,6 +126,17 @@ veco focus remove [path1] [path2] [path3]...
 ```
 
 Puts all inputted paths out of focus. A file being in out of focus means it will NOT be included in changes.
+
+### veco revert
+Does the same thing as running `veco view changes` and selecting something and reverting to it, but there is no list and an ID must be specified.
+
+<br />
+
+```
+veco revert [ID]
+```
+
+Reverts the filesystem to change with the id `ID`
 
 ## how it works
 
