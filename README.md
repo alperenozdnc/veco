@@ -22,6 +22,14 @@ Here are the prerequisites:
 
 Steps to install:
 ```
+git clone https://github.com/alperenozdnc/veco.git 
+```
+
+```
+cd veco
+```
+
+```
 npm install
 ```
 
