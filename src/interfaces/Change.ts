@@ -7,5 +7,6 @@ export interface Change {
     MOD: Difference[];
     INIT: Difference[];
     DEL: Difference[];
+    date: string;
 }
 
