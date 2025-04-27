@@ -1,21 +1,25 @@
 import fs from "fs";
 
 import { checkVecoDir, log } from "../utils";
-import { FOCUSFILE_PATH, IGNOREFILE_PATH } from "../constants";
+import { FOCUSFILE_PATH, IGNOREFILE_PATH, VECO_DIR } from "../constants";
 
-function reformatPath(path: string) {
+function reformatPath(path: string, cwd = process.cwd()) {
     let newPath = "";
 
+    if (path === cwd) {
+        return path;
+    }
+
     if (path === "." || path === "./") {
-        newPath = `${process.cwd()}`;
+        newPath = `${cwd}`;
     } else {
-        newPath = `${process.cwd()}/${path}`;
+        newPath = `${cwd}/${path}`;
     }
 
     return newPath;
 }
 
-export function focus(args: string[]) {
+export function focus(args: string[], useVecoDir: boolean = false) {
     const isVecoDirectory: boolean = checkVecoDir();
 
     if (!isVecoDirectory) {
@@ -83,7 +87,11 @@ export function focus(args: string[]) {
             }
         }
 
-        path = reformatPath(path);
+        if (useVecoDir) {
+            path = reformatPath(path, VECO_DIR);
+        } else {
+            path = reformatPath(path);
+        }
 
         if (focusfileContent.includes(path)) {
             log.warning(`${path} is already focused, skipping...`);
