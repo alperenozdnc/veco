@@ -93,6 +93,40 @@ veco view diff [all/focused-only/unfocused-only]
 ```
 Lists any, only focused, or only unfocused diffs that didn't make it into a change.
 
+### veco focus [[path]/list/clean/remove]
+The ultimate command for any kind of deletion action.
+
+<br />
+
+```
+veco focus [path1] [path2] [path3]...
+```
+
+Puts all inputted paths on focus. A file being in focus means it will be included in changes.
+
+<br />
+
+```
+veco focus list
+```
+
+Lists all focused paths.
+
+<br />
+
+```
+veco focus clean
+```
+Cleans all focused paths.
+
+<br />
+
+```
+veco focus remove [path1] [path2] [path3]...
+```
+
+Puts all inputted paths out of focus. A file being in out of focus means it will NOT be included in changes.
+
 ## how it works
 
 ## license
