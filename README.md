@@ -67,6 +67,32 @@ veco delete ignore [path1] [path2] [path3]...
 
 Unignores given paths on any filesystem operation.
 
+### veco view [ignores/changes/diff]
+The ultimate command for any kind of deletion action.
+
+<br />
+
+```
+veco view ignores 
+```
+
+Lists all ignores.
+
+<br />
+
+```
+veco view changes
+```
+
+Lists every change with their respective dates and gives option to view every operation, or revert back to that change
+
+<br />
+
+```
+veco view diff [all/focused-only/unfocused-only]
+```
+Lists any, only focused, or only unfocused diffs that didn't make it into a change.
+
 ## how it works
 
 ## license
