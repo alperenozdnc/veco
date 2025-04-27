@@ -3,7 +3,7 @@ import fs from "fs";
 import { spawn } from "child_process";
 import { select } from '@inquirer/prompts';
 
-import { ORDERFILE_PATH, VECO_DIR } from "../../constants";
+import { ORDERFILE_PATH } from "../../constants";
 import { handleYesNoInput, isLastChange, log } from "../../utils";
 import { readChangeFromId, revertToChange } from "../../functions";
 import { Change } from "../../interfaces";
@@ -15,6 +15,8 @@ export async function viewChanges() {
     }
 
     const CHANGE_IDS = fs.readFileSync(ORDERFILE_PATH).toString().split("\n");
+    const TMP_DIFF_PATH = "/tmp/VIEW";
+
     CHANGE_IDS.pop();
 
     let selected: Change | undefined;
@@ -85,22 +87,45 @@ export async function viewChanges() {
 
         switch (option) {
             case "del":
-                spawn("nvim", [`${VECO_DIR}/.veco/changes/${selected.ID}/DEL`], {
+                fs.writeFileSync(TMP_DIFF_PATH, "");
+
+                for (const DELAction of selected.DEL) {
+                    fs.appendFileSync(TMP_DIFF_PATH, ` ${"-".repeat(15)} DELETE PATH ${DELAction.file.path} ${"-".repeat(15)}\n`);
+                    fs.appendFileSync(TMP_DIFF_PATH, `${DELAction.file.content}`);
+                }
+
+                spawn("nvim", [TMP_DIFF_PATH], {
                     stdio: 'inherit',
                     detached: true
                 });
 
-
                 break;
             case "init":
-                spawn("nvim", [`${VECO_DIR}/.veco/changes/${selected.ID}/INIT`], {
+                fs.writeFileSync(TMP_DIFF_PATH, "");
+
+                for (const INITAction of selected.INIT) {
+                    fs.appendFileSync(TMP_DIFF_PATH, ` ${"-".repeat(15)} INITIALIZE PATH ${INITAction.file.path} ${"-".repeat(15)}\n`);
+                    fs.appendFileSync(TMP_DIFF_PATH, `${INITAction.file.content}`);
+                }
+
+                spawn("nvim", [TMP_DIFF_PATH], {
                     stdio: 'inherit',
                     detached: true
                 });
 
                 break;
             case "mod":
-                spawn("nvim", [`${VECO_DIR}/.veco/changes/${selected.ID}/MOD`], {
+                fs.writeFileSync(TMP_DIFF_PATH, "");
+
+                for (const MODAction of selected.MOD) {
+                    fs.appendFileSync(TMP_DIFF_PATH, ` ${"-".repeat(15)} MODIFY ${MODAction.file.path} ${"-".repeat(15)}\n`);
+                    fs.appendFileSync(TMP_DIFF_PATH, ` ${"-".repeat(7)} OLD FILE ${"-".repeat(10)}\n`);
+                    fs.appendFileSync(TMP_DIFF_PATH, `${MODAction.file.content}`);
+                    fs.appendFileSync(TMP_DIFF_PATH, ` ${"-".repeat(7)} NEW FILE ${"-".repeat(10)}\n`);
+                    fs.appendFileSync(TMP_DIFF_PATH, `${MODAction.newFile?.content ?? "[CONTENT NOT FOUND]"}\n`);
+                }
+
+                spawn("nvim", [TMP_DIFF_PATH], {
                     stdio: 'inherit',
                     detached: true
                 });
