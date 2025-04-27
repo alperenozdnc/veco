@@ -35,6 +35,7 @@ export function updateTree(basePath: string, differences: Difference[], isRef = 
             case "MOD":
                 {
                     const index = updatedTree.findIndex(refFile => refFile.path === file.path);
+
                     if (index !== -1 && newFile) {
                         updatedTree[index].content = newFile.content;
                     }
@@ -43,6 +44,7 @@ export function updateTree(basePath: string, differences: Difference[], isRef = 
             case "DEL":
                 {
                     const fullPath = file.path;
+
                     if (fs.existsSync(fullPath)) {
                         const relativeTrashPath = fullPath.replace(`${VECO_DIR}/`, "");
                         const trashPath = `${TRASH_DIR}/${relativeTrashPath}`;
@@ -54,6 +56,7 @@ export function updateTree(basePath: string, differences: Difference[], isRef = 
 
                         fs.renameSync(fullPath, trashPath);
                     }
+
                     updatedTree = updatedTree.filter(refFile => refFile.path !== file.path);
                 }
                 continue;

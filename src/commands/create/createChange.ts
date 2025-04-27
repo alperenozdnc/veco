@@ -30,14 +30,13 @@ export function createChange(args: string[], dev = false) {
         const path = diff.file.path;
 
         if (!fs.existsSync(path) && diff.operation === "DEL") {
-            // Try to restore content from trash
             const trashPath = `${VECO_DIR}/.veco/.trash/${path.replace(`${VECO_DIR}/`, "")}`;
+
             if (fs.existsSync(trashPath)) {
                 const content = fs.readFileSync(trashPath, "utf-8");
                 diff.file.content = content;
-            } else {
-                log.warning(`Missing backup for deleted file: ${path}`);
             }
+
             differences.push(diff);
             continue;
         }
