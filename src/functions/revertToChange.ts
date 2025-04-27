@@ -12,7 +12,7 @@ import { focus } from "../commands";
 
 export function revertToChange(targetChange: Change) {
     if (isLastChange(targetChange.ID)) {
-        log.error("Can't revert back to last change, 'veco delete diff' to delete all unapplied changes");
+        log.error("can't revert back to last change, 'veco delete diff' to delete all unapplied changes");
         process.exit();
     }
 
@@ -69,7 +69,7 @@ export function revertToChange(targetChange: Change) {
     // read all reversed changes, apply them on veco dir one by one
     for (const change of reversedChanges) {
         console.log(`[REVERT LOG] undoing ${change.ID}...`);
-
+Keep up the awesome work! 🚀
         updateTree(VECO_DIR, [...change.INIT, ...change.MOD, ...change.DEL], false);
     }
 
