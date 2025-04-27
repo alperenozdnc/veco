@@ -31,7 +31,7 @@ function main(args: string[]) {
         },
         {
             callers: ["revert", "-R", "--revert"],
-            action: () => revert(args[1]),
+            action: () => revert(args.slice(1)),
             description: "Reverts the filesystem back to a specific change. Example: revert [id]"
         },
     ];
