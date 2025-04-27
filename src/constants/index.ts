@@ -4,3 +4,4 @@ export const VECO_DIR = getVecoDir();
 export const IGNOREFILE_PATH = `${VECO_DIR}/.vecoig`;
 export const FOCUSFILE_PATH = `${VECO_DIR}/.veco/focus`
 export const REF_PATH = `${VECO_DIR}/.veco/ref`
+export const ORDERFILE_PATH = `${VECO_DIR}/.veco/order`;
