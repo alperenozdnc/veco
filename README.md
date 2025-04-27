@@ -20,7 +20,7 @@ The ultimate command for any kind of creation action.
 veco create project [path]
 ```
 
-Creates a veco project in given path, assumes `.` if nothing if none provided.
+Creates a veco project in given path, assumes `.` if none provided.
 
 ```
 veco create ignore [path1] [path2] [path3]...
