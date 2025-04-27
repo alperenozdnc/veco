@@ -5,7 +5,9 @@ import { OPERATION_NAMES, VECO_DIR } from "../constants";
 import { Operation } from "../types";
 
 export function readChangeFromId(ID: string): Change {
-    const msgAndDesc = fs.readFileSync(`${VECO_DIR}/.veco/messages/${ID}`).toString().split("\n");
+    // filter is to remove the '' in the middle created because of the space between the msg and desc
+    const msgAndDesc = fs.readFileSync(`${VECO_DIR}/.veco/messages/${ID}`).toString().split("\n").filter(str => str);
+
     const msg = msgAndDesc[0];
     const changeDate = fs.readFileSync(`${VECO_DIR}/.veco/dates/${ID}`).toString();
 
