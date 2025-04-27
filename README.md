@@ -24,11 +24,15 @@ veco create project [path]
 
 Creates a veco project in given path, assumes `.` if none provided.
 
+<br />
+
 ```
 veco create ignore [path1] [path2] [path3]...
 ```
 
 Ignores given paths on any filesystem operation.
+
+<br />
 
 ```
 veco create change {-M, msg, --message} [message] {-D, desc, --dsescription} [description]
