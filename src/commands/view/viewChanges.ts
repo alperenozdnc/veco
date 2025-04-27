@@ -1,4 +1,6 @@
 import fs from "fs";
+
+import { spawn } from "child_process";
 import { select } from '@inquirer/prompts';
 
 import { VECO_DIR } from "../../constants";
@@ -59,19 +61,22 @@ export async function viewChanges() {
     try {
         let choices = [
             {
-                name: "See MOD operations",
+                name: `See MOD operations (${selected?.MOD?.length} existing)`,
                 value: "mod",
-                description: ""
+                description: "",
+                disabled: selected?.MOD?.length === 0 ? "(nothing to see)" : false
             },
             {
-                name: "See INIT operations",
+                name: `See INIT operations (${selected?.INIT?.length} existing)`,
                 value: "init",
-                description: ""
+                description: "",
+                disabled: selected?.INIT?.length === 0 ? "(nothing to see)" : false
             },
             {
-                name: "See DEL operations",
+                name: `See DEL operations (${selected?.DEL?.length} existing)`,
                 value: "del",
-                description: ""
+                description: "",
+                disabled: selected?.DEL?.length === 0 ? "(nothing to see)" : false
             },
             {
                 name: "Revert to change",
@@ -96,15 +101,25 @@ export async function viewChanges() {
 
         switch (option) {
             case "del":
-                console.log(selected.DEL);
+                spawn("nvim", [`${VECO_DIR}/.veco/changes/${selected.ID}/DEL`], {
+                    stdio: 'inherit',
+                    detached: true
+                });
+
 
                 break;
             case "init":
-                console.log(selected.INIT);
+                spawn("nvim", [`${VECO_DIR}/.veco/changes/${selected.ID}/INIT`], {
+                    stdio: 'inherit',
+                    detached: true
+                });
 
                 break;
             case "mod":
-                console.log(selected.MOD);
+                spawn("nvim", [`${VECO_DIR}/.veco/changes/${selected.ID}/MOD`], {
+                    stdio: 'inherit',
+                    detached: true
+                });
 
                 break;
             case "revert":
