@@ -20,8 +20,10 @@ export function viewDiff(arg: string) {
     const differences = compareTwoTrees(REF_TREE, CURR_TREE);
     const ignores = parseIgnores();
 
+    if (!differences) return log.error("nothing to show");
+
     if (arg === "all") {
-        for (const diff of differences!) {
+        for (const diff of differences) {
             if (ignores.includes(diff.file.path)) {
                 continue;
             }
@@ -35,7 +37,7 @@ export function viewDiff(arg: string) {
     const refFocuses = readFocuses(REF_PATH);
     const focuses = readFocuses();
 
-    for (const diff of differences!) {
+    for (const diff of differences) {
         let path = diff.file.path;
 
         if (arg === "unfocused-only") {
