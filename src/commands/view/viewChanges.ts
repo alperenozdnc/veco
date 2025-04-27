@@ -3,29 +3,18 @@ import fs from "fs";
 import { spawn } from "child_process";
 import { select } from '@inquirer/prompts';
 
-import { VECO_DIR } from "../../constants";
-import { log } from "../../utils";
-import { revertToChange } from "../../functions";
-
-interface Change {
-    ID: string;
-    msg: string;
-    idx: number;
-    desc?: string;
-    MOD?: string;
-    INIT?: string;
-    DEL?: string;
-}
+import { ORDERFILE_PATH, VECO_DIR } from "../../constants";
+import { handleYesNoInput, isLastChange, log } from "../../utils";
+import { readChangeFromId, revertToChange } from "../../functions";
+import { Change } from "../../interfaces";
 
 export async function viewChanges() {
-    const ORDERFILE_PATH = `${VECO_DIR}/.veco/order`;
-
     if (!fs.existsSync(ORDERFILE_PATH)) {
         log.error("no changes to view");
         return;
     }
 
-    const CHANGE_IDS = fs.readFileSync(`${VECO_DIR}/.veco/order`).toString().split("\n");
+    const CHANGE_IDS = fs.readFileSync(ORDERFILE_PATH).toString().split("\n");
     CHANGE_IDS.pop();
 
     let selected: Change | undefined;
@@ -33,19 +22,13 @@ export async function viewChanges() {
     try {
         selected = await select({
             message: 'Select a change to view',
-            choices: CHANGE_IDS.reverse().map((id: string, idx: number) => {
-                const msgAndDesc = fs.readFileSync(`${VECO_DIR}/.veco/messages/${id}`).toString().split("\n");
-                const msg = msgAndDesc[0];
-
-                const changeDate = new Date(+fs.readFileSync(`${VECO_DIR}/.veco/dates/${id}`)).toLocaleString();
-                let mod = JSON.parse(fs.readFileSync(`${VECO_DIR}/.veco/changes/${id}/MOD`).toString());
-                let init = JSON.parse(fs.readFileSync(`${VECO_DIR}/.veco/changes/${id}/INIT`).toString());
-                let del = JSON.parse(fs.readFileSync(`${VECO_DIR}/.veco/changes/${id}/DEL`).toString());
+            choices: CHANGE_IDS.reverse().map((id: string) => {
+                const change = readChangeFromId(id);
 
                 return {
-                    name: `[${id}]  "${msg}" (${changeDate})`,
-                    value: { ID: id, msg: msg, desc: msgAndDesc[1] ?? null, INIT: init, DEL: del, MOD: mod, idx: idx },
-                    description: `${mod.length} modified, ${init.length} initialized, ${del.length} deleted`
+                    name: `[${id}]  "${change.msg}" (${new Date(+change.date).toLocaleString()})`,
+                    value: change,
+                    description: `${change.MOD.length} modified, ${change.INIT.length} initialized, ${change.DEL.length} deleted`
                 };
             }),
         });
@@ -83,7 +66,7 @@ export async function viewChanges() {
                 name: "Revert to change",
                 value: "revert",
                 description: "",
-                disabled: selected!.idx === 0 ? "(can't revert to latest change)" : false
+                disabled: isLastChange(selected!.ID) ? "(can't revert to latest change)" : false
             },
             {
                 name: "Cancel",
@@ -124,7 +107,11 @@ export async function viewChanges() {
 
                 break;
             case "revert":
-                revertToChange(selected.ID);
+                log.warning(`Reverting will undo ALL changes created after ${selected.ID} and ALL current unsaved changes`);
+                handleYesNoInput(`Continue?`);
+                console.log("");
+
+                revertToChange(selected);
 
                 break;
             case "cancel":
