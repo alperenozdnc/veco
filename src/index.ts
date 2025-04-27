@@ -1,5 +1,5 @@
 import { Command } from "./interfaces";
-import { help, create, Delete, view, focus } from "./commands";
+import { help, create, Delete, view, focus, revert } from "./commands";
 import { log } from "./utils";
 
 function main(args: string[]) {
@@ -28,6 +28,11 @@ function main(args: string[]) {
             callers: ["focus", "-F", "--focus"],
             action: () => focus(args.slice(1)),
             description: "Puts focus on files to be added to a change. Example: focus file.txt, focus ./"
+        },
+        {
+            callers: ["revert", "-R", "--revert"],
+            action: () => revert(args[1]),
+            description: "Reverts the filesystem back to a specific change. Example: revert [id]"
         },
     ];
 
