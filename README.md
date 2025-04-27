@@ -10,6 +10,30 @@ not meant to replace any existing version control technologies. Do not contribut
 
 ## usage
 
+### veco help
+Lists all the commands and their purposes.
+
+### veco create [project/ignore/change]
+The ultimate command for any kind of creation action.
+
+```
+veco create project [path]
+```
+
+Creates a veco project in given path, assumes `.` if nothing if none provided.
+
+```
+veco create ignore [path1] [path2] [path3]...
+```
+
+Ignores given paths on any filesystem operation.
+
+```
+veco create change {-M, msg, --message} [message] {-D, desc, --dsescription} [description]
+```
+
+Accumulates all focused diffs into a change and records it.
+
 ## how it works
 
 ## license
