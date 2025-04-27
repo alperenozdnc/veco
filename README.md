@@ -4,7 +4,8 @@ not meant to replace any existing version control technologies. Do not contribut
 
 ## table of contents
 
-- [usage](https://github.com/alperenozdnc/veco)
+- [installation](https://github.com/alperenozdnc/veco?tab=readme-ov-file#installation)
+- [usage](https://github.com/alperenozdnc/veco?tab=readme-ov-file#usage)
     * [`help`](https://github.com/alperenozdnc/veco?tab=readme-ov-file#veco-help)
     * [`create`](https://github.com/alperenozdnc/veco?tab=readme-ov-file#veco-create-projectignorechange)
     * [`delete`](https://github.com/alperenozdnc/veco?tab=readme-ov-file#veco-delete-projectdiffignore)
@@ -12,6 +13,25 @@ not meant to replace any existing version control technologies. Do not contribut
     * [`focus`](https://github.com/alperenozdnc/veco?tab=readme-ov-file#veco-focus-pathlistcleanremove)
     * [`revert`](https://github.com/alperenozdnc/veco?tab=readme-ov-file#veco-revert)
 - [license](https://github.com/alperenozdnc/veco)
+
+## installation
+
+Here are the prerequisites:
+- run linux on your computer
+- have [tsc](https://www.npmjs.com/package/typescript), and [npm](https://www.npmjs.com/) and [neovim](https://neovim.io/)
+
+Steps to install:
+```
+npm install
+```
+
+```
+npm run build
+```
+
+That will place a binary into your binaries. Have `./local/bin` in your path.
+
+Now you can run `veco help` or read the usage section for information on how to use this tool.
 
 ## usage
 
