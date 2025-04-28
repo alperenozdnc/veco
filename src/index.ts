@@ -2,7 +2,7 @@ import fs from "fs";
 
 import { Command } from "./interfaces";
 import { help, create, Delete, view, focus, revert } from "./commands";
-import { log } from "./utils";
+import { checkVecoDir, log } from "./utils";
 import { LOCKFILE_PATH } from "./constants";
 
 function main(args: string[]) {
@@ -64,11 +64,11 @@ function main(args: string[]) {
                 return;
             }
 
-            if (command.lock) fs.writeFileSync(LOCKFILE_PATH, "");
+            if (checkVecoDir(process.cwd()) && command.lock) fs.writeFileSync(LOCKFILE_PATH, "");
 
             command.action();
 
-            if (command.lock) fs.rmSync(LOCKFILE_PATH);
+            if (fs.existsSync(LOCKFILE_PATH) && command.lock) fs.rmSync(LOCKFILE_PATH);
 
             return;
         }
